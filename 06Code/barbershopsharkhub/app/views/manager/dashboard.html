@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BarberShop - Manager Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    
+    <!-- Template Stylesheet (Rutas adaptadas para Express public dir) -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 mb-5 pb-5">
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-lg-5">
+            <a href="/" class="navbar-brand d-block d-lg-none">
+                <h1 class="m-0 display-4 text-primary text-uppercase">Manager</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
+                <div class="navbar-nav mr-auto py-0">
+                    <a href="/manager/dashboard" class="nav-item nav-link active">Dashboard</a>
+                    <a href="#" class="nav-item nav-link">Users</a>
+                </div>
+                <a href="/" class="navbar-brand bg-primary px-4 mx-3 d-none d-lg-block">
+                    <h1 class="m-0 display-4 text-white text-uppercase">BarberShop</h1>
+                </a>
+                <div class="navbar-nav ml-auto py-0">
+                    <a href="#" class="nav-item nav-link">Settings</a>
+                    <a href="/" class="nav-item nav-link">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Dashboard Content Start -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-3">
+                <!-- Sidebar -->
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active">Overview</a>
+                    <a href="#" class="list-group-item list-group-item-action">Manage Appointments</a>
+                    <a href="#" class="list-group-item list-group-item-action">Manage Services</a>
+                    <a href="#" class="list-group-item list-group-item-action">Manage Staff</a>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <!-- Main Content -->
+                <h2 class="mb-4">Manager Dashboard</h2>
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title text-white">Today's Appointments</h5>
+                                <p class="card-text display-4 text-white">12</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title text-white">Active Clients</h5>
+                                <p class="card-text display-4 text-white">150</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-warning mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title text-white">Pending Requests</h5>
+                                <p class="card-text display-4 text-white">3</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        Recent Activity
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">John Doe booked a Classic Haircut.</li>
+                        <li class="list-group-item">Jane Smith cancelled appointment.</li>
+                        <li class="list-group-item">New user registered: Mike Johnson.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Dashboard Content End -->
+
+    <!-- Footer Start -->
+    <div class="footer container-fluid position-relative bg-dark py-5" style="margin-top: 90px;">
+        <div class="container pt-5">
+            <div class="row">
+                <div class="col-12 text-center text-white">
+                    <p>&copy; <a class="text-white font-weight-bold" href="#">BarberShop Manager</a>. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
