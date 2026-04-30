@@ -76,3 +76,31 @@ Finalmente, construye y levanta el contenedor en segundo plano:
 sudo docker-compose up -d --build
 ```
 ¡Tu aplicación ya estará visible desde internet!
+
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+
+“solo quiero una barbería”
+
+Perfecto. Entonces haces esto:
+
+🔧 Estrategia PRO (la que usan startups)
+✔ Mantienes el modelo escalable (el que ya diseñamos)
+
+PERO…
+
+✔ Trabajas como si hubiera una sola barbería
+🧩 5. ¿Cómo funciona con una sola barbería?
+Opción simple (recomendada para MVP):
+Creas UNA barbería fija en la BD
+INSERT INTO barbershops (id, name)
+VALUES ('BARBERSHOP_DEFAULT', 'Mi Barbería');
+Luego TODO usa ese ID:
+barbershop_id = 'BARBERSHOP_DEFAULT'
+En el código:
+
+Ni siquiera dejas elegir barbería.
+
+Todo está “hardcodeado” lógicamente:
+
+const BARBERSHOP_ID = "default-id";
