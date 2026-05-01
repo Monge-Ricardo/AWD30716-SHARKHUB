@@ -23,6 +23,8 @@ app.get('/open', InfoController.open);
 
 // Rutas de Cliente
 app.get('/client/dashboard', ClientController.dashboard);
+app.get('/client/login', ClientController.login);
+app.get('/client/register', ClientController.register);
 
 // Rutas de Manager
 app.get('/manager/dashboard', ManagerController.dashboard);
