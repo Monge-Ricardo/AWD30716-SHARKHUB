@@ -20,6 +20,7 @@ app.get('/team', InfoController.team);
 app.get('/testimonial', InfoController.testimonial);
 app.get('/contact', InfoController.contact);
 app.get('/open', InfoController.open);
+app.get('/404', InfoController.notFound);
 
 // Rutas de Cliente
 app.get('/client/dashboard', ClientController.dashboard);

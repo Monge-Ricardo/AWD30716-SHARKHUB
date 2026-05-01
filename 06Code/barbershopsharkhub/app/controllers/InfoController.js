@@ -33,3 +33,7 @@ exports.contact = (req, res) => {
 exports.open = (req, res) => {
     res.sendFile(path.join(viewsPath, 'open.html'));
 };
+
+exports.notFound = (req, res) => {
+    res.sendFile(path.join(viewsPath, '404.html'));
+};
