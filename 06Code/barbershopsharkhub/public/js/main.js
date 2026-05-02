@@ -10,8 +10,8 @@
         }, 1);
     };
     spinner();
-    
-    
+
+
     // Initiate the wowjs
     new WOW().init();
 
@@ -24,8 +24,8 @@
             $('.sticky-top').removeClass('shadow-sm').css('top', '-100px');
         }
     });
-    
-    
+
+
     // Back to top button
     $(window).scroll(function () {
         if ($(this).scrollTop() > 300) {
@@ -35,7 +35,7 @@
         }
     });
     $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
         return false;
     });
 
@@ -51,7 +51,7 @@
         dotsData: true,
     });
 
-    
+
 })(jQuery);
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -67,7 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
         open: "/open",
         testimonial: "/testimonial",
         contact: "/contact",
-        notFound: "/404"
+        notFound: "/404",
+        login: "/client/login",
+        register: "/client/register"
     };
 
     function extractMainContent(htmlText) {
@@ -174,6 +176,21 @@ document.addEventListener("DOMContentLoaded", function () {
             const sectionName = this.getAttribute("data-section");
             loadSection(sectionName);
         });
+    });
+
+
+    document.body.addEventListener("click", function (event) {
+        const link = event.target.closest("a");
+        if (link) {
+            const href = link.getAttribute("href");
+            if (href === "/client/login") {
+                event.preventDefault();
+                loadSection("login");
+            } else if (href === "/client/register") {
+                event.preventDefault();
+                loadSection("register");
+            }
+        }
     });
 });
 
