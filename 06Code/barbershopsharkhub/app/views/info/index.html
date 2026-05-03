@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
-    <title>HairCut - Hair Salon HTML Template</title>
+    <title>Barbería PANDA Black And White</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     <!-- Favicon -->
     <link href="/img/favicon.ico" rel="icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+    <link rel="manifest" href="/img/site.webmanifest">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,39 +42,49 @@
     <div id="spinner"
         class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Cargando...</span>
         </div>
     </div>
     <!-- Spinner End -->
 
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-secondary navbar-dark sticky-top py-lg-0 px-lg-5>
-        <a href="/" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="mb-0 text-primary text-uppercase"><i class="fa fa-cut me-3"></i>HairCut</h1>
+    <nav class="navbar navbar-expand-lg bg-secondary navbar-dark sticky-top py-lg-0 px-lg-5">
+        <a href="#" class="navbar-brand ms-4 ms-lg-0" data-section="home">
+            <div class="d-flex align-items-center">
+                <img src="/img/BarberShop_PandaBlackAndWhite.png"
+                    alt="Logo Barbería PANDA Black And White"
+                    style="height: 58px; width: auto; margin-right: 12px;">
+                <h1 class="mb-0 text-primary text-uppercase">Barbería PANDA Black And White</h1>
+            </div>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="#" class="nav-item nav-link active" data-section="home">Home</a>
-                <a href="#" class="nav-item nav-link" data-section="about">About</a>
-                <a href="#" class="nav-item nav-link" data-section="service">Service</a>
+                <a href="#" class="nav-item nav-link active" data-section="home">Inicio</a>
+                <a href="#" class="nav-item nav-link" data-section="about">Nosotros</a>
+                <a href="#" class="nav-item nav-link" data-section="service">Servicios</a>
+
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Páginas</a>
                     <div class="dropdown-menu m-0">
-                        <a href="#" class="dropdown-item" data-section="price">Pricing Plan</a>
-                        <a href="#" class="dropdown-item" data-section="team">Our Barber</a>
-                        <a href="#" class="dropdown-item" data-section="open">Working Hours</a>
-                        <a href="#" class="dropdown-item" data-section="testimonial">Testimonial</a>
-                        <a href="#" class="dropdown-item" data-section="notFound">404 Page</a>
+                        <a href="#" class="dropdown-item" data-section="price">Precios</a>
+                        <a href="#" class="dropdown-item" data-section="team">Barberos</a>
+                        <a href="#" class="dropdown-item" data-section="open">Horarios</a>
+                        <a href="#" class="dropdown-item" data-section="testimonial">Opiniones</a>
+                        <a href="#" class="dropdown-item" data-section="notFound">Página 404</a>
                     </div>
                 </div>
-                <a href="#" class="nav-item nav-link" data-section="contact">Contact</a>
+
+                <a href="#" class="nav-item nav-link" data-section="contact">Contacto</a>
+
+                <a href="/client/login" class="btn btn-primary rounded-0 py-2 px-lg-4 mt-3 mt-lg-0 ms-lg-3 align-self-start align-self-lg-center">
+                    Agendar Cita
+                    <i class="fa fa-arrow-right ms-3"></i>
+                </a>
             </div>
-            <a href="/client/login" class="btn btn-primary rounded-0 py-2 px-lg-4 d-none d-lg-block">Appointment<i
-                    class="fa fa-arrow-right ms-3"></i></a>
         </div>
     </nav>
     <!-- Navbar End -->
@@ -85,12 +99,17 @@
                         <img class="w-100" src="/img/carousel-1.jpg" alt="Image">
                         <div class="carousel-caption d-flex align-items-center justify-content-center text-start">
                             <div class="mx-sm-5 px-5" style="max-width: 900px;">
-                                <h1 class="display-2 text-white text-uppercase mb-4 animated slideInDown">We Will Keep You
-                                    An Awesome Look</h1>
-                                <h4 class="text-white text-uppercase mb-4 animated slideInDown"><i
-                                        class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, New York, USA</h4>
-                                <h4 class="text-white text-uppercase mb-4 animated slideInDown"><i
-                                        class="fa fa-phone-alt text-primary me-3"></i>+012 345 67890</h4>
+                                <h1 class="display-2 text-white text-uppercase mb-4 animated slideInDown">
+                                    Barbería PANDA Black And White
+                                </h1>
+                                <h4 class="text-white text-uppercase mb-4 animated slideInDown">
+                                    <i class="fa fa-map-marker-alt text-primary me-3"></i>
+                                        Calle Inés Gangotena con Av. Atahualpa
+                                </h4>
+                                <h4 class="text-white text-uppercase mb-4 animated slideInDown">
+                                    <i class="fa fa-clock text-primary me-3"></i>
+                                        Atención de 10:00 a.m. a 8:30 p.m.
+                                </h4>
                             </div>
                         </div>
                     </div>
@@ -98,23 +117,27 @@
                         <img class="w-100" src="/img/carousel-2.jpg" alt="Image">
                         <div class="carousel-caption d-flex align-items-center justify-content-center text-start">
                             <div class="mx-sm-5 px-5" style="max-width: 900px;">
-                                <h1 class="display-2 text-white text-uppercase mb-4 animated slideInDown">Luxury Haircut at
-                                    Affordable Price</h1>
-                                <h4 class="text-white text-uppercase mb-4 animated slideInDown"><i
-                                        class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, New York, USA</h4>
-                                <h4 class="text-white text-uppercase mb-4 animated slideInDown"><i
-                                        class="fa fa-phone-alt text-primary me-3"></i>+012 345 67890</h4>
+                                <h1 class="display-2 text-white text-uppercase mb-4 animated slideInDown">
+                                    Cortes, barba y cejas con estilo profesional</h1>
+                                <h4 class="text-white text-uppercase mb-4 animated slideInDown">
+                                    <i class="fa fa-calendar-alt text-primary me-3"></i>
+                                    Reserva tu cita o acude por llegada libre
+                                </h4>
+                                <h4 class="text-white text-uppercase mb-4 animated slideInDown">
+                                    <i class="fa fa-cut text-primary me-3"></i>
+                                    Servicios desde $1.00
+                                </h4>
                             </div>
                         </div>
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
+                    <span class="visually-hidden">Anterior</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
+                    <span class="visually-hidden">Siguiente</span>
                 </button>
             </div>
         </div>
@@ -129,29 +152,35 @@
                         <div class="d-flex flex-column">
                             <img class="img-fluid w-75 align-self-end" src="/img/about.jpg" alt="">
                             <div class="w-50 bg-secondary p-5" style="margin-top: -25%;">
-                                <h1 class="text-uppercase text-primary mb-3">25 Years</h1>
-                                <h2 class="text-uppercase mb-0">Experience</h2>
+                                <h1 class="text-uppercase text-primary mb-3">25 Años</h1>
+                                <h2 class="text-uppercase mb-0">De Experiencia</h2>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-                        <p class="d-inline-block bg-secondary text-primary py-1 px-4">About Us</p>
-                        <h1 class="text-uppercase mb-4">More Than Just A Haircut. Learn More About Us!</h1>
-                        <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita
-                            erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                        <p class="mb-4">Stet no et lorem dolor et diam, amet duo ut dolore vero eos. No stet est diam rebum
-                            amet diam ipsum. Clita clita labore, dolor duo nonumy clita sit at, sed sit sanctus dolor eos.
+                        <p class="d-inline-block bg-secondary text-primary py-1 px-4">Nosotros</p>
+                        <h1 class="text-uppercase mb-4">¡Más que una barbería, un espacio para renovar tu estilo!</h1>
+                        <p>
+                            Barbería PANDA Black And White ofrece servicios de corte, barba y arreglo de cejas,
+                            brindando atención personalizada a cada cliente.
+                        </p>
+                        <p class="mb-4">
+                            Nuestro objetivo es ofrecer un servicio práctico, accesible y profesional,
+                            adaptado al tiempo y al estilo que cada persona necesita.
                         </p>
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <h3 class="text-uppercase mb-3">Since 1990</h3>
-                                <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet
-                                    diam et eos.</p>
+                                <h3 class="text-uppercase mb-3">Horario de atención</h3>
+                                <p class="mb-0">
+                                    Atendemos desde las 10:00 a.m. hasta las 8:30 p.m.,
+                                    con opción de cita o llegada libre.
+                                </p>
                             </div>
                             <div class="col-md-6">
-                                <h3 class="text-uppercase mb-3">1000+ clients</h3>
-                                <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet
-                                    diam et eos.</p>
+                                <h3 class="text-uppercase mb-3">Ubicación</h3>
+                                <p class="mb-0">
+                                    Nos encontramos en la Calle Inés Gangotena con Av. Atahualpa.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -165,8 +194,8 @@
         <div class="container-xxl py-5">
             <div class="container">
                 <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                    <p class="d-inline-block bg-secondary text-primary py-1 px-4">Services</p>
-                    <h1 class="text-uppercase">What We Provide</h1>
+                    <p class="d-inline-block bg-secondary text-primary py-1 px-4">Servicios</p>
+                    <h1 class="text-uppercase">Lo que ofrecemos</h1>
                 </div>
                 <div class="row g-4">
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -176,9 +205,9 @@
                                 <img class="img-fluid" src="/img/haircut.png" alt="">
                             </div>
                             <div class="ps-4">
-                                <h3 class="text-uppercase mb-3">Haircut</h3>
-                                <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam.</p>
-                                <span class="text-uppercase text-primary">From $15</span>
+                                <h3 class="text-uppercase mb-3">Corte normal</h3>
+                                <p>Corte clásico con acabado limpio. Tiempo aproximado: 20 minutos.</p>
+                                <span class="text-uppercase text-primary">Desde $5.00</span>
                             </div>
                             <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
                         </div>
@@ -190,9 +219,9 @@
                                 <img class="img-fluid" src="/img/beard-trim.png" alt="">
                             </div>
                             <div class="ps-4">
-                                <h3 class="text-uppercase mb-3">Beard Trim</h3>
-                                <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam.</p>
-                                <span class="text-uppercase text-primary">From $15</span>
+                                <h3 class="text-uppercase mb-3">Corte con navaja</h3>
+                                <p>Corte con definición más precisa usando navaja. Tiempo aproximado: 20 minutos.</p>
+                                <span class="text-uppercase text-primary">Desde $5.50</span>
                             </div>
                             <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
                         </div>
@@ -204,9 +233,9 @@
                                 <img class="img-fluid" src="/img/mans-shave.png" alt="">
                             </div>
                             <div class="ps-4">
-                                <h3 class="text-uppercase mb-3">Mans Shave</h3>
-                                <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam.</p>
-                                <span class="text-uppercase text-primary">From $15</span>
+                                <h3 class="text-uppercase mb-3">Corte con navaja y ceja</h3>
+                                <p>Incluye corte, detalles con navaja y arreglo de cejas. Tiempo aproximado: 30 minutos.</p>
+                                <span class="text-uppercase text-primary">Desde $6</span>
                             </div>
                             <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
                         </div>
@@ -218,9 +247,9 @@
                                 <img class="img-fluid" src="/img/hair-dyeing.png" alt="">
                             </div>
                             <div class="ps-4">
-                                <h3 class="text-uppercase mb-3">Hair Dyeing</h3>
-                                <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam.</p>
-                                <span class="text-uppercase text-primary">From $15</span>
+                                <h3 class="text-uppercase mb-3">Corte con barba</h3>
+                                <p>Servicio completo de corte y barba. Tiempo aproximado: 45 minutos.</p>
+                                <span class="text-uppercase text-primary">Desde $7.00</span>
                             </div>
                             <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
                         </div>
@@ -232,9 +261,9 @@
                                 <img class="img-fluid" src="/img/mustache.png" alt="">
                             </div>
                             <div class="ps-4">
-                                <h3 class="text-uppercase mb-3">Mustache</h3>
-                                <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam.</p>
-                                <span class="text-uppercase text-primary">From $15</span>
+                                <h3 class="text-uppercase mb-3">Barba</h3>
+                                <p>Perfilado y arreglo de barba. Tiempo aproximado: 30 minutos.</p>
+                                <span class="text-uppercase text-primary">Desde $3.50</span>
                             </div>
                             <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
                         </div>
@@ -246,9 +275,9 @@
                                 <img class="img-fluid" src="/img/stacking.png" alt="">
                             </div>
                             <div class="ps-4">
-                                <h3 class="text-uppercase mb-3">Stacking</h3>
-                                <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam.</p>
-                                <span class="text-uppercase text-primary">From $15</span>
+                                <h3 class="text-uppercase mb-3">Cejas</h3>
+                                <p>Arreglo rápido de cejas. Tiempo aproximado: 5 minutos.</p>
+                                <span class="text-uppercase text-primary">Desde $1.00</span>
                             </div>
                             <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
                         </div>
@@ -265,32 +294,32 @@
                 <div class="row g-0">
                     <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                         <div class="bg-secondary h-100 d-flex flex-column justify-content-center p-5">
-                            <p class="d-inline-flex bg-dark text-primary py-1 px-4 me-auto">Price & Plan</p>
-                            <h1 class="text-uppercase mb-4">Check Out Our Barber Services And Prices</h1>
+                            <p class="d-inline-flex bg-dark text-primary py-1 px-4 me-auto">Precios</p>
+                            <h1 class="text-uppercase mb-4">Lista de servicios y precios</h1>
                             <div>
                                 <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Haircut</h6>
-                                    <span class="text-uppercase text-primary">$29.00</span>
+                                    <h6 class="text-uppercase mb-0">Corte normal</h6>
+                                    <span class="text-uppercase text-primary">$5.00</span>
                                 </div>
                                 <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Beard Trim</h6>
-                                    <span class="text-uppercase text-primary">$35.00</span>
+                                    <h6 class="text-uppercase mb-0">Corte con navaja</h6>
+                                    <span class="text-uppercase text-primary">$5.50</span>
                                 </div>
                                 <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Mans Shave</h6>
-                                    <span class="text-uppercase text-primary">$23.00</span>
+                                    <h6 class="text-uppercase mb-0">Corte con navaja y ceja</h6>
+                                    <span class="text-uppercase text-primary">$6.00</span>
                                 </div>
                                 <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Hair Dyeing</h6>
-                                    <span class="text-uppercase text-primary">$19.00</span>
+                                    <h6 class="text-uppercase mb-0">Corte con barba</h6>
+                                    <span class="text-uppercase text-primary">$7.00</span>
                                 </div>
                                 <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Mustache</h6>
-                                    <span class="text-uppercase text-primary">$15.00</span>
+                                    <h6 class="text-uppercase mb-0">Barba</h6>
+                                    <span class="text-uppercase text-primary">$3.50</span>
                                 </div>
                                 <div class="d-flex justify-content-between py-2">
-                                    <h6 class="text-uppercase mb-0">Stacking</h6>
-                                    <span class="text-uppercase text-primary">$39.00</span>
+                                    <h6 class="text-uppercase mb-0">Cejas</h6>
+                                    <span class="text-uppercase text-primary">$1.00</span>
                                 </div>
                             </div>
                         </div>
@@ -310,8 +339,8 @@
         <div class="container-xxl py-5">
             <div class="container">
                 <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                    <p class="d-inline-block bg-secondary text-primary py-1 px-4">Our Barber</p>
-                    <h1 class="text-uppercase">Meet Our Barber</h1>
+                    <p class="d-inline-block bg-secondary text-primary py-1 px-4">Equipo</p>
+                    <h1 class="text-uppercase">Nuestro equipo de barbería</h1>
                 </div>
                 <div class="row g-4">
                     <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -325,8 +354,8 @@
                                 </div>
                             </div>
                             <div class="bg-secondary text-center p-4">
-                                <h5 class="text-uppercase">Barber Name</h5>
-                                <span class="text-primary">Designation</span>
+                                <h5 class="text-uppercase">Barbero profesional</h5>
+                                <span class="text-primary">Especialista en cortes</span>
                             </div>
                         </div>
                     </div>
@@ -341,8 +370,8 @@
                                 </div>
                             </div>
                             <div class="bg-secondary text-center p-4">
-                                <h5 class="text-uppercase">Barber Name</h5>
-                                <span class="text-primary">Designation</span>
+                                <h5 class="text-uppercase">Barbero profesional</h5>
+                                <span class="text-primary">Especialista en barba</span>
                             </div>
                         </div>
                     </div>
@@ -357,8 +386,8 @@
                                 </div>
                             </div>
                             <div class="bg-secondary text-center p-4">
-                                <h5 class="text-uppercase">Barber Name</h5>
-                                <span class="text-primary">Designation</span>
+                                <h5 class="text-uppercase">Barbero profesional</h5>
+                                <span class="text-primary">Cortes y detalles</span>
                             </div>
                         </div>
                     </div>
@@ -373,8 +402,8 @@
                                 </div>
                             </div>
                             <div class="bg-secondary text-center p-4">
-                                <h5 class="text-uppercase">Barber Name</h5>
-                                <span class="text-primary">Designation</span>
+                                <h5 class="text-uppercase">Barbero profesional</h5>
+                                <span class="text-primary">Diseño de cabello</span>
                             </div>
                         </div>
                     </div>
@@ -395,34 +424,28 @@
                     </div>
                     <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                         <div class="bg-secondary h-100 d-flex flex-column justify-content-center p-5">
-                            <p class="d-inline-flex bg-dark text-primary py-1 px-4 me-auto">Working Hours</p>
-                            <h1 class="text-uppercase mb-4">Professional Barbers Are Waiting For You</h1>
+                            <p class="d-inline-flex bg-dark text-primary py-1 px-4 me-auto">Horario de Atención</p>
+                            <h1 class="text-uppercase mb-4">
+                                Te esperamos en Barbería PANDA Black And White
+                            </h1>
                             <div>
                                 <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Monday</h6>
-                                    <span class="text-uppercase">09 AM - 09 PM</span>
+                                    <h6 class="text-uppercase mb-0">Horario</h6>
+                                    <span class="text-uppercase">10:00 a.m. - 8:30 p.m.</span>
                                 </div>
                                 <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Tuesday</h6>
-                                    <span class="text-uppercase">09 AM - 09 PM</span>
+                                    <h6 class="text-uppercase mb-0">Modalidad</h6>
+                                    <span class="text-uppercase">Cita o llegada libre</span>
                                 </div>
                                 <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Wednesday</h6>
-                                    <span class="text-uppercase">09 AM - 09 PM</span>
-                                </div>
-                                <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Thursday</h6>
-                                    <span class="text-uppercase">09 AM - 09 PM</span>
-                                </div>
-                                <div class="d-flex justify-content-between border-bottom py-2">
-                                    <h6 class="text-uppercase mb-0">Friday</h6>
-                                    <span class="text-uppercase">09 AM - 09 PM</span>
-                                </div>
-                                <div class="d-flex justify-content-between py-2">
-                                    <h6 class="text-uppercase mb-0">Sat / Sun</h6>
-                                    <span class="text-uppercase text-primary">Closed</span>
+                                    <h6 class="text-uppercase mb-0">Ubicación</h6>
+                                    <span class="text-uppercase">Inés Gangotena y Av. Atahualpa</span>
                                 </div>
                             </div>
+                            <p class="mt-4 mb-0">
+                                Puedes reservar una cita o acudir por llegada libre, dependiendo de la disponibilidad.
+                                El tiempo de atención depende del servicio solicitado.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -430,44 +453,42 @@
         </div>
         <!-- Working Hours End -->
 
-
         <!-- Testimonial Start -->
         <div class="container-xxl py-5">
             <div class="container">
                 <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                    <p class="d-inline-block bg-secondary text-primary py-1 px-4">Testimonial</p>
-                    <h1 class="text-uppercase">What Our Clients Say!</h1>
+                    <p class="d-inline-block bg-secondary text-primary py-1 px-4">Opiniones</p>
+                    <h1 class="text-uppercase">Comentarios de nuestros clientes</h1>
                 </div>
                 <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
                     <div class="testimonial-item text-center"
                         data-dot="<img class='img-fluid' src='img/testimonial-1.jpg' alt=''>">
-                        <h4 class="text-uppercase">Client Name</h4>
-                        <p class="text-primary">Profession</p>
-                        <span class="fs-5">Clita clita tempor justo dolor ipsum amet kasd amet duo justo duo duo labore sed
-                            sed. Magna ut diam sit et amet stet eos sed clita erat magna elitr erat sit sit erat at rebum
-                            justo sea clita.</span>
+                        <h4 class="text-uppercase">Ramón Martínez</h4>
+                        <p class="text-primary">Corte profesional</p>
+                        <span class="fs-5">
+                            La atención fue clara y el tiempo de servicio estuvo acorde al trabajo solicitado.
+                        </span>
                     </div>
                     <div class="testimonial-item text-center"
                         data-dot="<img class='img-fluid' src='img/testimonial-2.jpg' alt=''>">
-                        <h4 class="text-uppercase">Client Name</h4>
-                        <p class="text-primary">Profession</p>
-                        <span class="fs-5">Clita clita tempor justo dolor ipsum amet kasd amet duo justo duo duo labore sed
-                            sed. Magna ut diam sit et amet stet eos sed clita erat magna elitr erat sit sit erat at rebum
-                            justo sea clita.</span>
+                        <h4 class="text-uppercase">Jorge Rodríguez</h4>
+                        <p class="text-primary">Corte normal</p>
+                        <span class="fs-5">
+                            Excelente atención y buen acabado en el corte. El servicio fue rápido y ordenado.
+                        </span>
                     </div>
                     <div class="testimonial-item text-center"
                         data-dot="<img class='img-fluid' src='img/testimonial-3.jpg' alt=''>">
-                        <h4 class="text-uppercase">Client Name</h4>
-                        <p class="text-primary">Profession</p>
-                        <span class="fs-5">Clita clita tempor justo dolor ipsum amet kasd amet duo justo duo duo labore sed
-                            sed. Magna ut diam sit et amet stet eos sed clita erat magna elitr erat sit sit erat at rebum
-                            justo sea clita.</span>
+                        <h4 class="text-uppercase">Luis González</h4>
+                        <p class="text-primary">Corte con barba</p>
+                        <span class="fs-5">
+                            Muy buen servicio, ideal para quienes buscan corte y arreglo de barba en un solo lugar.
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Testimonial End -->
-        
     </main>
 
     <!-- Footer Start -->
@@ -475,40 +496,40 @@
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-uppercase mb-4">Get In Touch</h4>
+                    <h4 class="text-uppercase mb-4">Contáctanos</h4>
                     <div class="d-flex align-items-center mb-2">
                         <div class="btn-square bg-dark flex-shrink-0 me-3">
                             <span class="fa fa-map-marker-alt text-primary"></span>
                         </div>
-                        <span>123 Street, New York, USA</span>
+                        <span>Calle Inés Gangotena con Av. Atahualpa</span>
                     </div>
                     <div class="d-flex align-items-center mb-2">
                         <div class="btn-square bg-dark flex-shrink-0 me-3">
-                            <span class="fa fa-phone-alt text-primary"></span>
+                            <span class="fa fa-clock text-primary"></span>
                         </div>
-                        <span>+012 345 67890</span>
+                        <span>10:00 a.m. - 8:30 p.m.</span>
                     </div>
                     <div class="d-flex align-items-center">
                         <div class="btn-square bg-dark flex-shrink-0 me-3">
-                            <span class="fa fa-envelope-open text-primary"></span>
+                            <span class="fa fa-cut text-primary"></span>
                         </div>
-                        <span>info@example.com</span>
+                        <span>Barbería PANDA Black And White</span>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-uppercase mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Contact Us</a>
-                    <a class="btn btn-link" href="">Our Services</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">Support</a>
+                    <h4 class="text-uppercase mb-4">Enlaces Rápidos</h4>
+                    <a class="btn btn-link" href="#" data-section="about">Nosotros</a>
+                    <a class="btn btn-link" href="#" data-section="contact">Contacto</a>
+                    <a class="btn btn-link" href="#" data-section="service">Servicios</a>
+                    <a class="btn btn-link" href="#" data-section="price">Precios</a>
+                    <a class="btn btn-link" href="#" data-section="open">Horarios</a>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-uppercase mb-4">Newsletter</h4>
+                    <h4 class="text-uppercase mb-4">Agenda</h4>
                     <div class="position-relative mb-4">
-                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button"
-                            class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                        <a href="/client/login" class="btn btn-primary py-2 px-4">
+                            Agendar cita
+                        </a>
                     </div>
                     <div class="d-flex pt-1 m-n1">
                         <a class="btn btn-lg-square btn-dark text-primary m-1" href=""><i
@@ -527,7 +548,7 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+                        &copy; <a class="border-bottom" href="#">Barbería PANDA Black And White</a>, todos los derechos reservados.
                     </div>
                     <div class="col-md-6 text-center text-md-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
