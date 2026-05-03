@@ -68,7 +68,11 @@
     z-index: 1;
 }
 
-.form-control-custom {
+.form-control-custom, 
+.form-control,
+input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+textarea,
+select {
     width: 100%;
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(139, 146, 178, 0.15);
@@ -80,18 +84,27 @@
     outline: none;
 }
 
-.form-control-custom:focus {
+.form-control-custom:focus,
+.form-control:focus,
+input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+textarea:focus,
+select:focus {
     border-color: var(--primary);
     background: rgba(0, 0, 0, 0.6);
     box-shadow: 0 0 0 4px rgba(217, 4, 41, 0.15);
     transform: translateY(-2px);
 }
 
-.form-control-custom::placeholder {
+.form-control-custom::placeholder,
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
     color: rgba(139, 146, 178, 0.4);
 }
 
-.form-label-custom {
+.form-label-custom,
+.form-label,
+label {
     display: block;
     color: var(--light);
     margin-bottom: 0.6rem;
@@ -102,6 +115,14 @@
     transition: color 0.3s ease;
 }
 
+/* Support for changing label color when input is focused */
+label:has(+ .form-control-custom:focus),
+label:has(+ .form-control:focus),
+label:has(+ input:focus),
+label:has(+ textarea:focus),
+label:has(+ select:focus),
+.form-label:has(+ .form-control:focus),
+.form-label-custom:has(+ .form-control-custom:focus),
 .form-control-custom:focus + .form-label-custom,
 .form-control-custom:not(:placeholder-shown) + .form-label-custom {
     color: var(--primary);
@@ -110,7 +131,8 @@
 /* 
  * Submit Button
  */
-.btn-submit-custom {
+.btn-submit-custom,
+form button[type="submit"] {
     width: 100%;
     background: var(--primary);
     color: #ffffff;
@@ -130,7 +152,8 @@
     font-family: 'Oswald', sans-serif;
 }
 
-.btn-submit-custom::before {
+.btn-submit-custom::before,
+form button[type="submit"]::before {
     content: '';
     position: absolute;
     top: 0;
@@ -143,17 +166,20 @@
     z-index: -1;
 }
 
-.btn-submit-custom:hover {
+.btn-submit-custom:hover,
+form button[type="submit"]:hover {
     background: #F10C35; /* Brighter accent on hover */
     box-shadow: 0 15px 25px -10px rgba(217, 4, 41, 0.6);
     transform: translateY(-3px);
 }
 
-.btn-submit-custom:hover::before {
+.btn-submit-custom:hover::before,
+form button[type="submit"]:hover::before {
     transform: translateX(100%);
 }
 
-.btn-submit-custom:active {
+.btn-submit-custom:active,
+form button[type="submit"]:active {
     transform: translateY(0);
     box-shadow: 0 5px 10px -5px rgba(217, 4, 41, 0.6);
 }

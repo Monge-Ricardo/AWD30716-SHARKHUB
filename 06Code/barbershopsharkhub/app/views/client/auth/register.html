@@ -1,86 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>BarberShop - Client Dashboard</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <!-- Template Stylesheet (Rutas adaptadas para Express public dir) -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
-</head>
-
-<body>
     <!-- Register Form -->
-    <main id="main-content">
-        <div class="container py-5">
-            <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
-                <div class="col-md-8 col-lg-6">
-                    <div class="card border-0 shadow rounded-lg">
-                        <div class="card-header bg-primary text-white text-center py-4 border-0">
-                            <i class="fas fa-user-plus fa-3x mb-2"></i>
-                            <h2 class="m-0 font-weight-bold">Registro de usuario</h2>
-                        </div>
-                        <div class="card-body p-5">
-                            <form action="#" method="POST">
-                                <div class="form-group mb-4">
-                                    <label for="name" class="font-weight-bold">Nombre</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-light text-primary border-right-0"><i
-                                                    class="fas fa-user"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control border-left-0" id="name" name="name"
-                                            placeholder="Ingresa tu nombre" required>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label for="email" class="font-weight-bold">Correo electrónico</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-light text-primary border-right-0"><i
-                                                    class="fas fa-envelope"></i></span>
-                                        </div>
-                                        <input type="email" class="form-control border-left-0" id="email" name="email"
-                                            placeholder="Ingresa tu correo electrónico" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-4">
-                                    <label for="username" class="font-weight-bold">Usuario</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-light text-primary border-right-0"><i
-                                                    class="fas fa-user"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control border-left-0" id="username"
-                                            name="username" placeholder="Crear tu usuario" required>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label for="password" class="font-weight-bold">Contraseña</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-light text-primary border-right-0"><i
-                                                    class="fas fa-lock"></i></span>
-                                        </div>
-                                        <input type="password" class="form-control border-left-0" id="password"
-                                            name="password" placeholder="Crear tu contraseña" required>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block btn-lg mt-4 shadow-sm">
-                                    Registrar <i class="fas fa-user-check ml-2"></i>
-                                </button>
-                            </form>
-                            <div class="text-center mt-4">
-                                <p class="mb-0 text-muted">
-                                    ¿Ya tienes una cuenta? <a href="/client/login"
-                                        class="text-primary font-weight-bold">Inicia sesión</a>
-                                </p>
+    <main id="main-content" class="d-flex align-items-center justify-content-center" style="min-height: calc(100vh - 150px);">
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 wow fadeIn" data-wow-delay="0.1s">
+                        <div class="form-wrapper mx-auto">
+                            <div class="form-header text-center mb-4">
+                                <p class="d-inline-block bg-dark text-primary py-1 px-4 mb-3"
+                                    style="font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+                                    Únete a nosotras</p>
+                                <h2 class="text-center" style="font-size: 2.2rem;">Registro de usuario</h2>
+                                <p class="text-center mt-2">Crea tu cuenta para acceder a nuestros servicios.</p>
                             </div>
+                            <form action="#" method="POST">
+                                <div class="row g-4">
+                                    <div class="col-12 form-group mb-0 form-animated-element stagger-1">
+                                        <label class="form-label-custom" for="name">Nombre</label>
+                                        <input type="text" class="form-control-custom" id="name" name="name" placeholder="Ingresa tu nombre" required>
+                                    </div>
+                                    <div class="col-12 form-group mb-0 form-animated-element stagger-2">
+                                        <label class="form-label-custom" for="email">Correo electrónico</label>
+                                        <input type="email" class="form-control-custom" id="email" name="email" placeholder="Ingresa tu correo electrónico" required>
+                                    </div>
+                                    <div class="col-12 form-group mb-0 form-animated-element stagger-3">
+                                        <label class="form-label-custom" for="username">Usuario</label>
+                                        <input type="text" class="form-control-custom" id="username" name="username" placeholder="Crear tu usuario" required>
+                                    </div>
+                                    <div class="col-12 form-group mb-0 form-animated-element stagger-4">
+                                        <label class="form-label-custom" for="password">Contraseña</label>
+                                        <input type="password" class="form-control-custom" id="password" name="password" placeholder="Crear tu contraseña" required>
+                                    </div>
+                                    <div class="col-12 form-animated-element stagger-5 mt-4">
+                                        <button class="btn-submit-custom" type="submit">Registrar <i class="fas fa-user-check ms-2"></i></button>
+                                    </div>
+                                    <div class="col-12 form-animated-element stagger-5 mt-2">
+                                        <div class="form-footer">
+                                            ¿Ya tienes una cuenta? <a href="/client/login">Inicia sesión</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -88,23 +47,3 @@
         </div>
     </main>
     <!-- Register Form End -->
-
-    <!-- Footer Start -->
-    <div class="footer container-fluid position-relative bg-dark py-5" style="margin-top: 90px;">
-        <div class="container pt-5">
-            <div class="row">
-                <div class="col-12 text-center text-white">
-                    <p>&copy; <a class="text-white font-weight-bold" href="#">BarberShop</a>. All Rights Reserved.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/main.js"></script>
-</body>
-
-</html>
