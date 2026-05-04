@@ -247,23 +247,26 @@ h1, h2, h3, h4, h5, h6,
 
 /* ---------- Tables ---------- */
 .table-dashboard {
-    color: var(--text-main);
+    color: var(--text-main) !important;
     margin-top: 1rem;
+    border-color: var(--border-color);
 }
 
 .table-dashboard th {
     border-bottom: 1px solid var(--border-color);
-    color: var(--text-muted);
+    color: var(--primary-gold) !important; /* Brighter gold for headers */
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
     letter-spacing: 1px;
     text-transform: uppercase;
+    background-color: transparent !important;
 }
 
 .table-dashboard td {
     border-bottom: 1px solid var(--border-color);
     vertical-align: middle;
-    background: transparent;
+    background-color: transparent !important;
+    color: var(--text-main) !important;
 }
 
 .table-dashboard.table-hover tbody tr {
