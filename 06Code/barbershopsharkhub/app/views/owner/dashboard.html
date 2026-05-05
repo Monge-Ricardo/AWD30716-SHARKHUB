@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Owner Dashboard | SharkHub</title>
+    <title>Panel administrativo | SharkHub</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="description" content="SharkHub Owner Dashboard — Manage your barbershop, barbers, and global agenda.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,23 +19,23 @@
 
     <nav class="sidebar">
         <div class="brand-text"><i class="fa-solid fa-scissors"></i> SHARKHUB</div>
-        <a href="#" class="nav-link active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-        <a href="#" class="nav-link" onclick="switchTab('barbershop-info')"><i class="fa-solid fa-store"></i> Barbershop Info</a>
-        <a href="#" class="nav-link" onclick="switchTab('manage-barbers')"><i class="fa-solid fa-users"></i> Manage Barbers</a>
-        <a href="#" class="nav-link" onclick="switchTab('global-agenda')"><i class="fa-regular fa-calendar-check"></i> Global Agenda</a>
-        <a href="/" class="nav-link logout-mt"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+        <a href="#" class="nav-link active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i>Inicio</a>
+        <a href="#" class="nav-link" onclick="switchTab('barbershop-info')"><i class="fa-solid fa-store"></i>Información de la barbería</a>
+        <a href="#" class="nav-link" onclick="switchTab('manage-barbers')"><i class="fa-solid fa-users"></i>Gestión de barberos</a>
+        <a href="#" class="nav-link" onclick="switchTab('global-agenda')"><i class="fa-regular fa-calendar-check"></i>Agenda general</a>
+        <a href="/" class="nav-link logout-mt"><i class="fa-solid fa-arrow-right-from-bracket"></i>Cerrar sesión</a>
     </nav>
 
     <main class="main-content">
         <header class="page-header">
             <div>
-                <h2>Owner Portal</h2>
-                <p class="text-muted mb-0">Manage your business overview and operations.</p>
+                <h2>Espacio del propietario</h2>
+                <p class="text-muted mb-0">Administra la información, el personal y la agenda general de la barbería.</p>
             </div>
             <div class="user-profile">
                 <div class="text-end d-none d-sm-block">
                     <h6 class="mb-0">Ricardo Monge</h6>
-                    <small class="text-muted">Owner</small>
+                    <small class="text-muted">Propietario</small>
                 </div>
                 <img src="https://ui-avatars.com/api/?name=Ricardo+Monge&background=D4AF37&color=000" alt="Owner" class="avatar">
             </div>
@@ -46,36 +46,48 @@
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="stat-card">
-                        <div class="stat-info"><h3>124</h3><p>Total Appointments</p></div>
+                        <div class="stat-info"><h3>124</h3><p>Total de citas</p></div>
                         <div class="stat-icon"><i class="fa-regular fa-calendar"></i></div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="stat-card">
-                        <div class="stat-info"><h3>8</h3><p>Active Barbers</p></div>
+                        <div class="stat-info"><h3>8</h3><p>Barberos activos</p></div>
                         <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="stat-card">
-                        <div class="stat-info"><h3>$4.2k</h3><p>Revenue (This Month)</p></div>
+                        <div class="stat-info"><h3>$4.2k</h3><p>Ingresos del mes</p></div>
                         <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
                     </div>
                 </div>
             </div>
             <div class="mt-5">
-                <h4 class="section-title">Recent Activity</h4>
+                <h4 class="section-title">Actividad reciente</h4>
                 <div class="table-responsive">
                     <table class="table table-dashboard table-hover">
-                        <thead><tr><th>Client</th><th>Barber</th><th>Service</th><th>Date/Time</th><th>Status</th></tr></thead>
+                        <thead><tr>
+                            <th>Cliente</th>
+                            <th>Barbero</th>
+                            <th>Servicio</th>
+                            <th>Fecha/Hora</th>
+                            <th>Estado</th>
+                        </tr></thead>
                         <tbody>
                             <tr>
-                                <td>John Doe</td><td>Mike Johnson</td><td>Classic Haircut</td><td>Today, 14:00</td>
-                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                                <td>John Doe</td>
+                                <td>Mike Johnson</td>
+                                <td>Corte Normal</td>
+                                <td>Hoy, 14:00</td>
+                                <td><span class="status-badge status-confirmed">Confirmado</span></td>
                             </tr>
                             <tr>
-                                <td>Sarah Williams</td><td>David Smith</td><td>Hair Dyeing</td><td>Today, 15:30</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td>Sarah Williams</td>
+                                <td>David Smith</td>
+                                <td>Teñido del cabello</td>
+                                <td>Hoy, 15:30</td>
+                                <td><span class="status-badge status-pending">Pendiente</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -85,28 +97,28 @@
 
         <!-- Tab: Barbershop Info (HU8-9) -->
         <section id="barbershop-info" class="content-section">
-            <h4 class="section-title">Edit Barbershop Information</h4>
+            <h4 class="section-title">Editar información de la barbería</h4>
             <div class="panel-card dashboard-form">
                 <form>
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <label class="form-label">Barbershop Name</label>
+                            <label class="form-label">Nombre de la barbería</label>
                             <input type="text" class="form-control" value="Premium Cuts SharkHub">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Phone Number</label>
+                            <label class="form-label">Número de teléfono</label>
                             <input type="text" class="form-control" value="+012 345 67890">
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Location / Address</label>
+                            <label class="form-label">Ubicación / Dirección</label>
                             <input type="text" class="form-control" value="123 Luxury Street, New York">
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-control" rows="4">Experience the best haircut and grooming services in the city. We blend traditional techniques with modern styling.</textarea>
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" rows="4">Ofrecemos servicios de corte, arreglo personal y barbería con una combinación de técnicas tradicionales y estilos modernos.</textarea>
                         </div>
                         <div class="col-12 text-end mt-4">
-                            <button type="button" class="btn btn-gold">Save Changes</button>
+                            <button type="button" class="btn btn-gold">Guardar Cambios</button>
                         </div>
                     </div>
                 </form>
@@ -116,12 +128,18 @@
         <!-- Tab: Manage Barbers (HU10-11) -->
         <section id="manage-barbers" class="content-section">
             <div class="section-title">
-                <h4>Manage Barbers</h4>
+                <h4>Gestión de barberos</h4>
                 <button class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-plus"></i> Add Barber</button>
             </div>
             <div class="table-responsive">
                 <table class="table table-dashboard table-hover">
-                    <thead><tr><th>Barber Name</th><th>Email</th><th>Specialty</th><th>Status</th><th>Actions</th></tr></thead>
+                    <thead><tr>
+                        <th>Nombre del barbero</th>
+                        <th>Email</th>
+                        <th>Especialidad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr></thead>
                     <tbody>
                         <tr>
                             <td>
@@ -130,8 +148,9 @@
                                     Mike Johnson
                                 </div>
                             </td>
-                            <td>mike@sharkhub.com</td><td>Fades & Trims</td>
-                            <td><span class="status-badge status-confirmed">Active</span></td>
+                            <td>mike@sharkhub.com</td>
+                            <td>Degradados y perfilado</td>
+                            <td><span class="status-badge status-confirmed">Activo</span></td>
                             <td>
                                 <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
                                 <button class="action-btn delete"><i class="fa-solid fa-trash"></i></button>
@@ -144,8 +163,9 @@
                                     David Smith
                                 </div>
                             </td>
-                            <td>david@sharkhub.com</td><td>Hair Dyeing</td>
-                            <td><span class="status-badge status-confirmed">Active</span></td>
+                            <td>david@sharkhub.com</td>
+                            <td>Degradados y perfilado</td>
+                            <td><span class="status-badge status-confirmed">Activo</span></td>
                             <td>
                                 <button class="action-btn"><i class="fa-solid fa-pen-to-square"></i></button>
                                 <button class="action-btn delete"><i class="fa-solid fa-trash"></i></button>
@@ -159,11 +179,11 @@
         <!-- Tab: Global Agenda (HU24) -->
         <section id="global-agenda" class="content-section">
             <div class="section-title">
-                <h4>Global Agenda</h4>
+                <h4>Agenda General</h4>
                 <div class="d-flex gap-2">
                     <input type="date" class="form-control form-control-sm" style="width: auto;">
                     <select class="form-select form-select-sm" style="width: auto;">
-                        <option>All Barbers</option>
+                        <option>Todos los barberos</option>
                         <option>Mike Johnson</option>
                         <option>David Smith</option>
                     </select>
@@ -171,10 +191,10 @@
             </div>
             <div class="table-responsive">
                 <table class="table table-dashboard table-hover mt-3">
-                    <thead><tr><th>Time</th><th>Client</th><th>Barber</th><th>Service</th><th>Status</th></tr></thead>
+                    <thead><tr><th>Hora</th><th>Cliente</th><th>Barbero</th><th>Servicio</th><th>Estado</th></tr></thead>
                     <tbody>
                         <tr>
-                            <td>09:00 AM</td><td>Alex Turner</td><td>Mike Johnson</td><td>Beard Trim</td>
+                            <td>09:00 AM</td><td>Alex Turner</td><td>Mike Johnson</td><td>Perfilado de barba</td>
                             <td><span class="status-badge status-confirmed">Confirmed</span></td>
                         </tr>
                         <tr>
@@ -182,7 +202,7 @@
                             <td><span class="status-badge status-pending">Pending</span></td>
                         </tr>
                         <tr>
-                            <td>14:00 PM</td><td>John Doe</td><td>Mike Johnson</td><td>Classic Haircut</td>
+                            <td>14:00 PM</td><td>John Doe</td><td>Mike Johnson</td><td>Afeitado masculino</td>
                             <td><span class="status-badge status-confirmed">Confirmed</span></td>
                         </tr>
                     </tbody>
