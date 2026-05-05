@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // Importar controladores
 const InfoController = require('./app/controllers/InfoController')
-const ClientController = require('./app/controllers/ClientController')
+const CustomerController = require('./app/controllers/CustomerController')
 const OwnerController = require('./app/controllers/OwnerController')
 const BarberController = require('./app/controllers/BarberController')
 
@@ -28,10 +28,10 @@ app.get('/open', InfoController.open)
 app.get('/404', InfoController.notFound)
 
 // Rutas de Cliente
-app.get('/client/dashboard', ClientController.dashboard)
-app.get('/client/login', ClientController.login)
-app.get('/client/register', ClientController.register)
-app.get('/client/profile', ClientController.profile)
+app.get('/customer/dashboard', CustomerController.dashboard)
+app.get('/customer/login', CustomerController.login)
+app.get('/customer/register', CustomerController.register)
+app.get('/customer/profile', CustomerController.profile)
 
 // Rutas de Owner
 app.get('/owner/dashboard', OwnerController.dashboard)

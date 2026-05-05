@@ -5,7 +5,7 @@
 class User {
     static async findById(id) {
         // Simulación de búsqueda en base de datos
-        return { id, name: "John Doe", role: "client" };
+        return { id, name: "John Doe", role: "customer" };
     }
 }
 
