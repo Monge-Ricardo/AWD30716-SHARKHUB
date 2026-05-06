@@ -68,8 +68,8 @@ document.addEventListener("DOMContentLoaded", function () {
         testimonial: "/testimonial",
         contact: "/contact",
         notFound: "/404",
-        login: "/client/login",
-        register: "/client/register"
+        login: "/customer/login",
+        register: "/customer/register"
     };
 
     function extractMainContent(htmlText) {
@@ -183,12 +183,84 @@ document.addEventListener("DOMContentLoaded", function () {
         const link = event.target.closest("a");
         if (link) {
             const href = link.getAttribute("href");
-            if (href === "/client/login") {
+            if (href === "/customer/login") {
                 event.preventDefault();
                 loadSection("login");
-            } else if (href === "/client/register") {
+            } else if (href === "/customer/register") {
                 event.preventDefault();
                 loadSection("register");
+            }
+        }
+    });
+
+    // Handle Authentication Forms
+    document.body.addEventListener("submit", async function (event) {
+        if (event.target.matches("#loginForm")) {
+            event.preventDefault();
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = 'Cargando... <i class="fas fa-spinner fa-spin ms-2"></i>';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = result.redirect;
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error al iniciar sesión.');
+                console.error(error);
+            } finally {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        if (event.target.matches("#registerForm")) {
+            event.preventDefault();
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = 'Registrando... <i class="fas fa-spinner fa-spin ms-2"></i>';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Registro exitoso. Ahora puedes iniciar sesión.');
+                    loadSection("login");
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error en el registro.');
+                console.error(error);
+            } finally {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
             }
         }
     });

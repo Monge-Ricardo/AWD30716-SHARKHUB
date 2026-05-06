@@ -15,6 +15,7 @@ const InfoController = require('./app/controllers/InfoController')
 const CustomerController = require('./app/controllers/CustomerController')
 const OwnerController = require('./app/controllers/OwnerController')
 const BarberController = require('./app/controllers/BarberController')
+const AuthController = require('./app/controllers/AuthController')
 
 // Rutas de Información Pública
 app.get('/', InfoController.index)
@@ -38,6 +39,10 @@ app.get('/owner/dashboard', OwnerController.dashboard)
 
 // Rutas de Barber
 app.get('/barber/dashboard', BarberController.dashboard)
+
+// Rutas API de Autenticación
+app.post('/api/auth/login', AuthController.login)
+app.post('/api/auth/register', AuthController.register)
 
 // Rutas API de Barber (CRUD)
 app.get('/api/barber/services', BarberController.getServices)

@@ -39,3 +39,10 @@ build/
 supabase/.temp/
 
 /app/generated/prisma
+
+# Scripts de prueba temporales
+test.js
+check_*.js
+fix_*.js
+confirm_*.js
+set_role.js
