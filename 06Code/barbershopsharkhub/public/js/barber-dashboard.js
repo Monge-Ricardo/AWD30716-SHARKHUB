@@ -39,8 +39,8 @@ async function loadProducts() {
             tr.innerHTML = `
                 <td>${product.name}</td>
                 <td>${product.description || 'Sin descripción'}</td>
-                <td>${product.stock}</td>
-                <td>$${parseFloat(product.price).toFixed(2)}</td>
+                <td>${product.stock || 0}</td>
+                <td>$${parseFloat(product.price || 0).toFixed(2)}</td>
                 <td>
                     <button class="action-btn" onclick="editProduct('${product.id}')" title="Editar"><i class="fa-solid fa-pen-to-square"></i></button>
                     <button class="action-btn delete" onclick="deleteProduct('${product.id}')" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -69,8 +69,8 @@ async function loadServices() {
             tr.innerHTML = `
                 <td>${service.name}</td>
                 <td>${service.description || 'Sin descripción'}</td>
-                <td>${service.duration_minutes} min</td>
-                <td>$${parseFloat(service.price).toFixed(2)}</td>
+                <td>${service.duration_minutes || 0} min</td>
+                <td>$${parseFloat(service.price || 0).toFixed(2)}</td>
                 <td>
                     <button class="action-btn" onclick="editService('${service.id}')" title="Editar"><i class="fa-solid fa-pen-to-square"></i></button>
                     <button class="action-btn delete" onclick="deleteService('${service.id}')" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -125,8 +125,10 @@ async function deleteService(id) {
 function openProductModal() {
     document.getElementById('productForm').reset();
     document.getElementById('productId').value = '';
-    document.getElementById('productModalLabel').innerText = 'Add New Product';
-    const modal = new bootstrap.Modal(document.getElementById('productModal'));
+    document.getElementById('productModalLabel').innerText = 'Agregar Producto';
+    const modalElement = document.getElementById('productModal');
+    let modal = bootstrap.Modal.getInstance(modalElement);
+    if (!modal) modal = new bootstrap.Modal(modalElement);
     modal.show();
 }
 
@@ -145,9 +147,11 @@ async function editProduct(id) {
             document.getElementById('productDescription').value = product.description || '';
             document.getElementById('productPrice').value = product.price;
             document.getElementById('productStock').value = product.stock;
-            document.getElementById('productModalLabel').innerText = 'Edit Product';
+            document.getElementById('productModalLabel').innerText = 'Editar Producto';
             
-            const modal = new bootstrap.Modal(document.getElementById('productModal'));
+            const modalElement = document.getElementById('productModal');
+            let modal = bootstrap.Modal.getInstance(modalElement);
+            if (!modal) modal = new bootstrap.Modal(modalElement);
             modal.show();
         }
     } catch (error) {
@@ -181,7 +185,9 @@ document.getElementById('productForm').addEventListener('submit', async function
         });
 
         if (response.ok) {
-            bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+            const modalElement = document.getElementById('productModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) modal.hide();
             loadProducts();
         } else {
             alert('Error al guardar el producto');
@@ -197,8 +203,10 @@ document.getElementById('productForm').addEventListener('submit', async function
 function openServiceModal() {
     document.getElementById('serviceForm').reset();
     document.getElementById('serviceId').value = '';
-    document.getElementById('serviceModalLabel').innerText = 'Add New Service';
-    const modal = new bootstrap.Modal(document.getElementById('serviceModal'));
+    document.getElementById('serviceModalLabel').innerText = 'Agregar Servicio';
+    const modalElement = document.getElementById('serviceModal');
+    let modal = bootstrap.Modal.getInstance(modalElement);
+    if (!modal) modal = new bootstrap.Modal(modalElement);
     modal.show();
 }
 
@@ -217,9 +225,11 @@ async function editService(id) {
             document.getElementById('serviceDescription').value = service.description || '';
             document.getElementById('servicePrice').value = service.price;
             document.getElementById('serviceDuration').value = service.duration_minutes;
-            document.getElementById('serviceModalLabel').innerText = 'Edit Service';
+            document.getElementById('serviceModalLabel').innerText = 'Editar Servicio';
             
-            const modal = new bootstrap.Modal(document.getElementById('serviceModal'));
+            const modalElement = document.getElementById('serviceModal');
+            let modal = bootstrap.Modal.getInstance(modalElement);
+            if (!modal) modal = new bootstrap.Modal(modalElement);
             modal.show();
         }
     } catch (error) {
@@ -253,7 +263,9 @@ document.getElementById('serviceForm').addEventListener('submit', async function
         });
 
         if (response.ok) {
-            bootstrap.Modal.getInstance(document.getElementById('serviceModal')).hide();
+            const modalElement = document.getElementById('serviceModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) modal.hide();
             loadServices();
         } else {
             alert('Error al guardar el servicio');
