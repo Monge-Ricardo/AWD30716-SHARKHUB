@@ -358,6 +358,34 @@ h1, h2, h3, h4, h5, h6,
     border-color: var(--text-main);
 }
 
+.btn-outline-danger {
+    background-color: transparent;
+    color: var(--accent-red);
+    border: 1px solid var(--accent-red);
+    font-weight: 600;
+    padding: 10px 25px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    border-radius: 6px;
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--accent-red);
+    color: #fff;
+}
+
+.section-actions {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.section-actions .btn {
+    min-width: 220px;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 991px) {
     .sidebar {
@@ -376,5 +404,15 @@ h1, h2, h3, h4, h5, h6,
         margin-left: 0;
         padding: 2rem 1.5rem;
         padding-top: 4rem;
+    }
+
+    .section-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .section-actions .btn {
+        width: 100%;
+        min-width: 0;
     }
 }

@@ -6,6 +6,7 @@
 'use strict';
 
 const BARBERSHOP_ID = 'bf338534-365a-4d8d-b45d-1e961e182467'; // En una app real, esto vendría del perfil del usuario logueado
+let productsData = [];
 
 document.addEventListener('DOMContentLoaded', function () {
     loadServices();
@@ -41,13 +42,11 @@ async function loadProducts() {
                 <td>${product.description || 'Sin descripción'}</td>
                 <td>${product.stock || 0}</td>
                 <td>$${parseFloat(product.price || 0).toFixed(2)}</td>
-                <td>
-                    <button class="action-btn" onclick="editProduct('${product.id}')" title="Editar"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button class="action-btn delete" onclick="deleteProduct('${product.id}')" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                </td>
             `;
             tbody.appendChild(tr);
         });
+
+        productsData = products;
     } catch (error) {
         console.error('Error cargando productos:', error);
     }
@@ -84,7 +83,60 @@ async function loadServices() {
 }
 
 /**
- * Elimina un producto.
+ * Edit products
+ */
+const openEditProductsModalBtn = document.getElementById('openEditProductsModalBtn');
+
+if (openEditProductsModalBtn) {
+    openEditProductsModalBtn.addEventListener('click', function () {
+        const tableBody = document.getElementById('editProductsTableBody');
+
+        tableBody.innerHTML = '';
+
+        productsData.forEach(product => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>
+                    <input type="radio" name="edit-product-radio" class="edit-product-radio" value="${product.id}">
+                </td>
+                <td>${product.name}</td>
+                <td>${product.stock || 0}</td>
+                <td>$${parseFloat(product.price || 0).toFixed(2)}</td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+
+        const modal = new bootstrap.Modal(document.getElementById('editProductsModal'));
+        modal.show();
+    });
+}
+
+const confirmEditProductBtn = document.getElementById('confirmEditProductBtn');
+
+if (confirmEditProductBtn) {
+    confirmEditProductBtn.addEventListener('click', async function () {
+        const selectedProduct = document.querySelector('.edit-product-radio:checked');
+
+        if (!selectedProduct) {
+            alert('Selecciona un producto para editar.');
+            return;
+        }
+
+        const editModalElement = document.getElementById('editProductsModal');
+        const editModal = bootstrap.Modal.getInstance(editModalElement);
+
+        if (editModal) {
+            editModal.hide();
+        }
+
+        await editProduct(selectedProduct.value);
+    });
+}
+
+/**
+ * Delete products
  */
 async function deleteProduct(id) {
     if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
@@ -99,6 +151,63 @@ async function deleteProduct(id) {
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+const openDeleteProductsModalBtn = document.getElementById('openDeleteProductsModalBtn');
+
+if (openDeleteProductsModalBtn) {
+    openDeleteProductsModalBtn.addEventListener('click', function () {
+        const tableBody = document.getElementById('deleteProductsTableBody');
+
+        tableBody.innerHTML = '';
+
+        productsData.forEach(product => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>
+                    <input type="checkbox" class="delete-product-checkbox" value="${product.id}">
+                </td>
+                <td>${product.name}</td>
+                <td>${product.stock || 0}</td>
+                <td>$${parseFloat(product.price || 0).toFixed(2)}</td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+
+        const modal = new bootstrap.Modal(document.getElementById('deleteProductsModal'));
+        modal.show();
+    });
+}
+
+const confirmDeleteProductsBtn = document.getElementById('confirmDeleteProductsBtn');
+
+if (confirmDeleteProductsBtn) {
+    confirmDeleteProductsBtn.addEventListener('click', async function () {
+        const selectedCheckboxes = document.querySelectorAll('.delete-product-checkbox:checked');
+
+        if (selectedCheckboxes.length === 0) {
+            alert('Selecciona al menos un producto.');
+            return;
+        }
+
+        const confirmDelete = confirm('¿Seguro que deseas eliminar los productos seleccionados?');
+
+        if (!confirmDelete) {
+            return;
+        }
+
+        for (const checkbox of selectedCheckboxes) {
+            await deleteProduct(checkbox.value);
+        }
+
+        const modalElement = document.getElementById('deleteProductsModal');
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        modal.hide();
+
+        await loadProducts();
+    });
 }
 
 /**

@@ -118,16 +118,30 @@
         <section id="products" class="content-section">
             <div class="section-title">
                 <h4>Mi Catálogo de Productos</h4>
+            </div>
+            <div class="section-actions">
                 <button 
-                    class="btn btn-outline-gold btn-sm"
+                    class="btn btn-outline-gold btn-sm dashboard-action-btn"
                     data-bs-toggle="modal" 
                     data-bs-target="#productModal">
                     <i class="fa-solid fa-plus"></i> Agregar Producto
                 </button>
+                <button 
+                    class="btn btn-outline-gold btn-sm dashboard-action-btn" 
+                    id="openEditProductsModalBtn">
+                    <i class="fa-solid fa-pen-to-square"></i> Editar producto
+                </button>
+
+                <button 
+                    class="btn btn-outline-danger btn-sm dashboard-action-btn" 
+                    id="openDeleteProductsModalBtn">
+                    <i class="fa-solid fa-trash"></i> Eliminar producto
+                </button>
             </div>
+
             <div class="table-responsive">
                 <table class="table table-dashboard table-hover">
-                    <thead><tr><th>Nombre del Producto</th><th>Categoría</th><th>Stock</th><th>Precio</th><th>Acciones</th></tr></thead>
+                    <thead><tr><th>Nombre del Producto</th><th>Categoría</th><th>Stock</th><th>Precio</th></tr></thead>
                     <tbody>
                         <!-- Dynamically loaded by barber-dashboard.js -->
                     </tbody>
@@ -174,7 +188,85 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Modal for Select Product to Edit -->
+    <div class="modal fade" id="editProductsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar producto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Selecciona el producto que deseas editar.</p>
+
+                    <table class="table table-dashboard">
+                        <thead>
+                            <tr>
+                                <th>Seleccionar</th>
+                                <th>Producto</th>
+                                <th>Stock</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="editProductsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="button" class="btn btn-gold" id="confirmEditProductBtn">
+                        Editar seleccionado
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Delete Product -->
+    <div class="modal fade" id="deleteProductsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar productos</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Selecciona los productos que deseas eliminar.</p>
+
+                    <table class="table table-dashboard">
+                        <thead>
+                            <tr>
+                                <th>Seleccionar</th>
+                                <th>Producto</th>
+                                <th>Stock</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deleteProductsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="button" class="btn btn-danger" id="confirmDeleteProductsBtn">
+                        Eliminar seleccionados
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal for Services -->
     <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
         <div class="modal-dialog">
