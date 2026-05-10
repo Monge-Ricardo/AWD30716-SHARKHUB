@@ -38,8 +38,6 @@ build/
 # Supabase (cuando se conecte)
 supabase/.temp/
 
-/app/generated/prisma
-
 # Scripts de prueba temporales
 test.js
 check_*.js
