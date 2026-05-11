@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\BarbershopMember;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
+class AuthController extends Controller
+{
+    public function login(Request $request)
+    {
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $supabaseUrl = rtrim(config('services.supabase.url'), '/');
+        $supabaseAnonKey = config('services.supabase.anon_key');
+
+        if (!$supabaseUrl || !$supabaseAnonKey) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Supabase no está configurado correctamente en Laravel.',
+            ], 500);
+        }
+
+        $authResponse = Http::withHeaders([
+            'apikey' => $supabaseAnonKey,
+            'Authorization' => 'Bearer ' . $supabaseAnonKey,
+            'Content-Type' => 'application/json',
+        ])->post($supabaseUrl . '/auth/v1/token?grant_type=password', [
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+        ]);
+
+        if (!$authResponse->successful()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Credenciales inválidas.',
+            ], 401);
+        }
+
+        $authData = $authResponse->json();
+
+        $authUserId = $authData['user']['id'] ?? null;
+
+        if (!$authUserId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo obtener el usuario autenticado.',
+            ], 500);
+        }
+
+        $user = User::where('id', $authUserId)
+            ->orWhere('email', $validatedData['email'])
+            ->first();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El usuario existe en Supabase Auth, pero no existe en la tabla pública users.',
+            ], 404);
+        }
+
+        $membership = BarbershopMember::with('barbershop')
+            ->where('user_id', $user->id)
+            ->where('status', 'active')
+            ->first();
+
+        session([
+            'user_id' => $user->id,
+            'user_name' => $user->full_name,
+            'user_email' => $user->email,
+            'role' => $membership?->role,
+            'barbershop_id' => $membership?->barbershop_id,
+            'supabase_access_token' => $authData['access_token'] ?? null,
+        ]);
+
+        $redirectUrl = '/customer/dashboard';
+
+        if ($membership && $membership->role === 'owner') {
+            $redirectUrl = '/owner/dashboard';
+        }
+
+        if ($membership && $membership->role === 'barber') {
+            $redirectUrl = '/barber/dashboard';
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Inicio de sesión correcto.',
+            'redirect' => $redirectUrl,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->full_name,
+                'email' => $user->email,
+                'role' => $membership?->role,
+                'barbershop_id' => $membership?->barbershop_id,
+            ],
+        ]);
+    }
+
+    public function logout()
+    {
+        session()->flush();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sesión cerrada correctamente.',
+            'redirect' => '/',
+        ]);
+    }
+}
