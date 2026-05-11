@@ -1,106 +1,59 @@
-# SKILLS
-npx skills add https://github.com/anthropics/skills --skill frontend-design
-npx skills add https://github.com/supabase/agent-skills --skill supabase-postgres-best-practices
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-# AGENTS.md
-Contexto para la IA
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-# tecnologias
-ROL: Actúa como un gestor de proyectos con mas de 15 años de experiencia. CONTEXTO: Voy hacer un web service, en este caso de una barberia, las tecnologias que voy a utilizar es template bootstrap 5, js, html, css, php, supabase postgresql, sweetalert, react and next.js, trello, github, docker para desplegar la web en aws utilizando EC2 con una metodlogia AGIL SCRUM y teniendo encuenta clean code, arquitectura MVC y principios SOLID .
-ACCIÓN: Utiliza trello, para hacer sprints correctos y poder organizarnos el grupo de 3 personas. Que se separen responsabilidades.
+## About Laravel
 
-# Desarrollo Local (Guía para el Equipo de Trabajo)
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-Para que cualquier miembro del equipo pueda descargar y correr el proyecto en su propia computadora, sigan estos pasos:
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-### Prerrequisitos
-- Tener instalado **Git**.
-- Tener instalado **Docker Desktop** (Asegurarse de que esté ejecutándose).
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-### 1. Clonar el repositorio
-Abran su terminal o Git Bash y ejecuten:
-```bash
-git clone https://github.com/tu-usuario/barbershopsharkhub.git
-cd barbershopsharkhub
-```
+## Learning Laravel
 
-### 2. Levantar el servidor
-Construiremos y levantaremos el contenedor Docker:
-```bash
-docker-compose up -d --build
-```
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
 
-### 3. Ver el resultado
-- Abran su navegador y visiten: `http://localhost` (o `http://localhost:80`)
-- Si hay algún problema de puerto ocupado, avisen al encargado para mapear un puerto distinto en local (ej. `8080:3000`).
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-Para detener el servidor localmente sin borrar nada, ejecuten:
-```bash
-docker-compose stop
-```
+## Laravel Sponsors
 
----
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-# Despliegue en Producción (AWS EC2)
+### Premium Partners
 
-A continuación, se detallan los pasos para desplegar este proyecto en una máquina virtual de AWS EC2 utilizando GitHub y Docker.
+- **[Vehikl](https://vehikl.com)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Redberry](https://redberry.international/laravel-development)**
+- **[Active Logic](https://activelogic.com)**
 
-## 1. Conectarse a la instancia EC2
-Accede a tu instancia por SSH:
-```bash
-ssh -i "tu-llave.pem" ubuntu@tu-ip-publica-ec2
-```
+## Contributing
 
-## 2. Instalar Docker y Git (Si no están instalados)
-Actualiza el sistema e instala Git, Docker y Docker Compose:
-```bash
-sudo apt update
-sudo apt install git docker.io docker-compose -y
-```
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## 3. Clonar el repositorio desde GitHub
-Clona el proyecto en tu máquina EC2 y entra en el directorio:
-```bash
-git clone https://github.com/tu-usuario/barbershopsharkhub.git
-cd barbershopsharkhub
-```
+## Code of Conduct
 
-## 4. Puerto por defecto (Puerto 80)
-El archivo `docker-compose.yml` ha sido configurado para mapear el puerto interno `3000` de la aplicación Node.js al puerto `80` del host (EC2). Esto permite acceder a la web directamente ingresando la IP pública, sin necesidad de especificar un puerto en la URL (ej. `http://tu-ip-publica-ec2/`).
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-**Nota Importante de Seguridad:** Asegúrate de ir a la consola de AWS y agregar una regla de entrada (Inbound Rule) en el **Security Group** de tu EC2 para permitir tráfico **HTTP (Puerto 80) desde cualquier origen (`0.0.0.0/0`)**.
+## Security Vulnerabilities
 
-## 5. Levantar el servicio
-Finalmente, construye y levanta el contenedor en segundo plano:
-```bash
-sudo docker-compose up -d --build
-```
-¡Tu aplicación ya estará visible desde internet!
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-------------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------------------
+## License
 
-“solo quiero una barbería”
-
-Perfecto. Entonces haces esto:
-
-🔧 Estrategia PRO (la que usan startups)
-✔ Mantienes el modelo escalable (el que ya diseñamos)
-
-PERO…
-
-✔ Trabajas como si hubiera una sola barbería
-🧩 5. ¿Cómo funciona con una sola barbería?
-Opción simple (recomendada para MVP):
-Creas UNA barbería fija en la BD
-INSERT INTO barbershops (id, name)
-VALUES ('BARBERSHOP_DEFAULT', 'Mi Barbería');
-Luego TODO usa ese ID:
-barbershop_id = 'BARBERSHOP_DEFAULT'
-En el código:
-
-Ni siquiera dejas elegir barbería.
-
-Todo está “hardcodeado” lógicamente:
-
-const BARBERSHOP_ID = "default-id";
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

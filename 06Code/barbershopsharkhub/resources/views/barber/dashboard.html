@@ -62,32 +62,25 @@
             </div>
             <div class="table-responsive">
                 <table class="table table-dashboard table-hover">
-                    <thead>
-                        <tr>
-                            <th>Hora</th>
-                            <th>Cliente</th>
-                            <th>Servicio</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Hora</th><th>Cliente</th><th>Servicio</th><th>Estado</th><th>Acciones</th></tr></thead>
                     <tbody>
                         <tr>
-                            <td>10:00 AM</td>
-                            <td>Alex Turner</td>
-                            <td>Corte Clásico</td>
+                            <td>10:00 AM</td><td>Alex Turner</td><td>Corte Clásico</td>
                             <td><span class="status-badge status-pending">Pendiente</span></td>
+                            <td>
+                                <button class="action-btn accept" title="Aceptar"><i class="fa-solid fa-check"></i></button>
+                                <button class="action-btn delete" title="Rechazar"><i class="fa-solid fa-xmark"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td>11:30 AM</td>
-                            <td>Chris Evans</td>
-                            <td>Perfilado de barba</td>
+                            <td>11:30 AM</td><td>Chris Evans</td><td>Perfilado de barba</td>
                             <td><span class="status-badge status-confirmed">Confirmado</span></td>
+                            <td><button class="action-btn delete" title="Cancelar"><i class="fa-solid fa-ban"></i></button></td>
                         </tr>
                         <tr>
-                            <td>14:00 PM</td>
-                            <td>John Doe</td>
-                            <td>Teñido del cabello</td>
+                            <td>14:00 PM</td><td>John Doe</td><td>Teñido del cabello</td>
                             <td><span class="status-badge status-confirmed">Confirmado</span></td>
+                            <td><button class="action-btn delete" title="Cancelar"><i class="fa-solid fa-ban"></i></button></td>
                         </tr>
                     </tbody>
                 </table>
