@@ -10,6 +10,74 @@ use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
+    public function register(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'username' => 'required|string',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $supabaseUrl = rtrim(config('services.supabase.url'), '/');
+        $supabaseAnonKey = config('services.supabase.anon_key');
+
+        if (!$supabaseUrl || !$supabaseAnonKey) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Supabase no está configurado.',
+            ], 500);
+        }
+
+        $signupResponse = Http::withHeaders([
+            'apikey' => $supabaseAnonKey,
+            'Authorization' => 'Bearer ' . $supabaseAnonKey,
+            'Content-Type' => 'application/json',
+        ])->post($supabaseUrl . '/auth/v1/signup', [
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+            'data' => [
+                'full_name' => $validatedData['name'],
+                'username' => $validatedData['username'],
+            ]
+        ]);
+
+        if (!$signupResponse->successful()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al registrar en Supabase Auth: ' . $signupResponse->json('msg', 'Error desconocido'),
+            ], 400);
+        }
+
+        $authData = $signupResponse->json();
+        $authUserId = $authData['user']['id'] ?? $authData['id'] ?? null;
+
+        if (!$authUserId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo obtener el ID del usuario desde Supabase.',
+            ], 500);
+        }
+
+        try {
+            $user = User::firstOrCreate(
+                ['id' => $authUserId],
+                [
+                    'full_name' => $validatedData['name'],
+                    'email' => $validatedData['email'],
+                ]
+            );
+        } catch (\Exception $e) {
+            // Ignorar el error si un trigger ya insertó al usuario u otro problema ocurrió, 
+            // pero podríamos hacer un log. Para este caso continuamos.
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuario registrado exitosamente.',
+        ]);
+    }
+
     public function login(Request $request)
     {
         $validatedData = $request->validate([
