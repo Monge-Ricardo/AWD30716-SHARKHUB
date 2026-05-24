@@ -455,7 +455,7 @@ async function confirmAppointment() {
         alert('Cita registrada correctamente.')
         await loadAppointments()
         resetWizard()
-        switchTab('my-appointments')
+        switchTab('my-appointments', '/customer/dashboard/my-appointments')
     } catch (error) {
         alert(error.message)
     } finally {

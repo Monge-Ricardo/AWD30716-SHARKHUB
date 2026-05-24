@@ -5,11 +5,18 @@
 
 'use strict'
 
-const barberTabRoutes = {
+const tabRoutes = {
+    // Barber
     '/barber/dashboard': 'agenda',
     '/barber/dashboard/agenda': 'agenda',
     '/barber/dashboard/services': 'services',
     '/barber/dashboard/products': 'products',
+    
+    // Customer
+    '/customer/dashboard': 'my-appointments',
+    '/customer/dashboard/my-appointments': 'my-appointments',
+    '/customer/dashboard/book-appointment': 'book-appointment',
+    '/customer/dashboard/profile': 'profile',
 }
 
 function switchTab(tabId, targetUrl = null) {
@@ -48,12 +55,12 @@ function switchTab(tabId, targetUrl = null) {
     }
 }
 
-function getCurrentBarberTab() {
-    return barberTabRoutes[window.location.pathname] || null
+function getCurrentTab() {
+    return tabRoutes[window.location.pathname] || null
 }
 
 function activateTabFromCurrentUrl() {
-    const tabId = getCurrentBarberTab()
+    const tabId = getCurrentTab()
 
     if (tabId) {
         switchTab(tabId)

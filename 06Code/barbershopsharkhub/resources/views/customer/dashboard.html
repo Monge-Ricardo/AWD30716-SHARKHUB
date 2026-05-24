@@ -5,12 +5,15 @@
     <meta charset="utf-8">
     <title>Área del cliente | SharkHub</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta name="description" content="→ SharkHub — Área del cliente para agendar citas, gestionar reservas y acceder a servicios de barbería.">
+    <meta name="description"
+        content="→ SharkHub — Área del cliente para agendar citas, gestionar reservas y acceder a servicios de barbería.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
 
     <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -36,13 +39,13 @@
             <i class="fa-solid fa-scissors"></i> SHARKHUB
         </div>
 
-        <a href="#" class="nav-link active" onclick="switchTab('my-appointments')">
+        <a href="/customer/dashboard/my-appointments" class="nav-link active" data-tab="my-appointments">
             <i class="fa-regular fa-calendar-check"></i> Mis Citas
         </a>
-        <a href="#" class="nav-link" onclick="switchTab('book-appointment')">
+        <a href="/customer/dashboard/book-appointment" class="nav-link" data-tab="book-appointment">
             <i class="fa-solid fa-calendar-plus"></i> Agendar Cita
         </a>
-        <a href="#" class="nav-link" onclick="switchTab('profile')">
+        <a href="/customer/dashboard/profile" class="nav-link" data-tab="profile">
             <i class="fa-solid fa-user-pen"></i> Perfil
         </a>
 
@@ -60,7 +63,8 @@
             </div>
             <div class="user-profile">
                 <span class="d-none d-sm-block font-weight-bold">Cargando...</span>
-                <img src="https://ui-avatars.com/api/?name=Cliente&background=222&color=D4AF37" alt="Cliente" class="avatar">
+                <img src="https://ui-avatars.com/api/?name=Cliente&background=222&color=D4AF37" alt="Cliente"
+                    class="avatar">
             </div>
         </header>
 
@@ -91,7 +95,8 @@
                     </div>
                     <div class="wizard-actions">
                         <div></div>
-                        <button class="btn btn-gold" onclick="nextStep(2)">Siguiente Paso<i class="fa-solid fa-arrow-right ms-2"></i></button>
+                        <button class="btn btn-gold" onclick="nextStep(2)">Siguiente Paso<i
+                                class="fa-solid fa-arrow-right ms-2"></i></button>
                     </div>
                 </div>
 
@@ -102,8 +107,10 @@
                         <p class="text-muted">Cargando servicios...</p>
                     </div>
                     <div class="wizard-actions">
-                        <button class="btn btn-outline" onclick="prevStep(1)"><i class="fa-solid fa-arrow-left me-2"></i>Atras</button>
-                        <button class="btn btn-gold" onclick="nextStep(3)">Siguiente Paso <i class="fa-solid fa-arrow-right ms-2"></i></button>
+                        <button class="btn btn-outline" onclick="prevStep(1)"><i
+                                class="fa-solid fa-arrow-left me-2"></i>Atras</button>
+                        <button class="btn btn-gold" onclick="nextStep(3)">Siguiente Paso <i
+                                class="fa-solid fa-arrow-right ms-2"></i></button>
                     </div>
                 </div>
 
@@ -125,8 +132,10 @@
                     </div>
 
                     <div class="wizard-actions">
-                        <button class="btn btn-outline" onclick="prevStep(2)"><i class="fa-solid fa-arrow-left me-2"></i> Atras</button>
-                        <button class="btn btn-gold" onclick="nextStep(4)">Revisar <i class="fa-solid fa-eye ms-2"></i></button>
+                        <button class="btn btn-outline" onclick="prevStep(2)"><i
+                                class="fa-solid fa-arrow-left me-2"></i> Atras</button>
+                        <button class="btn btn-gold" onclick="nextStep(4)">Revisar <i
+                                class="fa-solid fa-eye ms-2"></i></button>
                     </div>
                 </div>
 
@@ -139,7 +148,8 @@
                     </div>
 
                     <div class="wizard-actions">
-                        <button class="btn btn-outline" onclick="prevStep(3)"><i class="fa-solid fa-arrow-left me-2"></i> Atras</button>
+                        <button class="btn btn-outline" onclick="prevStep(3)"><i
+                                class="fa-solid fa-arrow-left me-2"></i> Atras</button>
                         <button type="button" class="btn btn-gold" id="confirmAppointmentBtn">
                             Confirmar Cita <i class="fa-solid fa-check ms-2"></i>
                         </button>
@@ -173,7 +183,8 @@
                             <input type="tel" class="form-control" id="profilePhone" value="">
                         </div>
                         <div class="col-12 text-end mt-4">
-                            <button type="button" class="btn btn-gold" id="saveCustomerProfileBtn">Guardar Cambios</button>
+                            <button type="button" class="btn btn-gold" id="saveCustomerProfileBtn">Guardar
+                                Cambios</button>
                         </div>
                     </div>
                 </form>
@@ -187,4 +198,5 @@
     <script src="/js/dashboard-common.js"></script>
     <script src="/js/customer-dashboard.js?v=6"></script>
 </body>
+
 </html>

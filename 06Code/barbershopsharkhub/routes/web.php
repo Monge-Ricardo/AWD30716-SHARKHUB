@@ -45,9 +45,9 @@ Route::get('/barber/dashboard/{tab?}', function ($tab = 'agenda') {
     return view('barber.dashboard');
 })->where('tab', 'agenda|services|products');
 
-Route::get('/customer/dashboard', function () {
+Route::get('/customer/dashboard/{tab?}', function ($tab = 'my-appointments') {
     return view('customer.dashboard');
-});
+})->where('tab', 'my-appointments|book-appointment|profile');
 
 Route::get('/owner/dashboard', function () {
     return view('owner.dashboard');
