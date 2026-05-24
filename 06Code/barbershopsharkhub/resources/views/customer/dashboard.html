@@ -59,8 +59,8 @@
                 <p class="text-muted mb-0">Agenda tus citas y accede a los servicios de barbería disponibles.</p>
             </div>
             <div class="user-profile">
-                <span class="d-none d-sm-block font-weight-bold">Jane Doe</span>
-                <img src="https://ui-avatars.com/api/?name=Jane+Doe&background=222&color=D4AF37" alt="Client" class="avatar">
+                <span class="d-none d-sm-block font-weight-bold">Cargando...</span>
+                <img src="https://ui-avatars.com/api/?name=Cliente&background=222&color=D4AF37" alt="Cliente" class="avatar">
             </div>
         </header>
 
@@ -68,39 +68,7 @@
         <section id="my-appointments" class="content-section active">
             <h3 class="section-title">Citas Próximas</h3>
 
-            <div class="appointment-card">
-                <div class="d-flex align-items-center gap-4">
-                    <div class="apt-date">
-                        <h3>15</h3>
-                        <span>Mayo</span>
-                    </div>
-                    <div class="apt-details">
-                        <h4>Corte clásico</h4>
-                        <p><i class="fa-regular fa-clock me-2"></i> 14:00 PM - con Mike Johnson</p>
-                    </div>
-                </div>
-                <div>
-                    <span class="badge bg-success" style="padding: 8px 15px; font-size: 0.85rem;">Confirmado</span>
-                    <button class="btn btn-outline-danger btn-sm ms-3">Cancelar</button>
-                </div>
-            </div>
-
-            <div class="appointment-card">
-                <div class="d-flex align-items-center gap-4">
-                    <div class="apt-date" style="background: rgba(255,255,255,0.05); color: var(--text-muted);">
-                        <h3>02</h3>
-                        <span>Junio</span>
-                    </div>
-                    <div class="apt-details">
-                        <h4 style="color: var(--text-muted);">Teñido del cabello</h4>
-                        <p><i class="fa-regular fa-clock me-2"></i> 10:00 AM - con David Smith</p>
-                    </div>
-                </div>
-                <div>
-                    <span class="badge bg-warning text-dark" style="padding: 8px 15px; font-size: 0.85rem;">Pendiente</span>
-                    <button class="btn btn-outline-danger btn-sm ms-3">Cancelar</button>
-                </div>
-            </div>
+            <p class="text-muted empty-appointments-message">Cargando citas...</p>
         </section>
 
         <!-- Tab: Book Appointment Wizard -->
@@ -119,23 +87,7 @@
                 <div class="wizard-panel active" id="panel-1">
                     <h4 class="wizard-step-title mb-4">Elige tu Barbero</h4>
                     <div class="selection-grid">
-                        <div class="selection-card" onclick="selectCard(this, 1)">
-                            <img src="https://ui-avatars.com/api/?name=Mike+J&background=random" alt="Mike">
-                            <h5 class="selection-title">Mike Johnson</h5>
-                            <p class="selection-subtitle">Barbero Senior</p>
-                        </div>
-                        <div class="selection-card" onclick="selectCard(this, 1)">
-                            <img src="https://ui-avatars.com/api/?name=David+S&background=random" alt="David">
-                            <h5 class="selection-title">David Smith</h5>
-                            <p class="selection-subtitle">Especialista en Estilo</p>
-                        </div>
-                        <div class="selection-card" onclick="selectCard(this, 1)">
-                            <div style="width:80px; height:80px; border-radius:50%; background:#222; margin: 0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:2rem; color:var(--text-muted);">
-                                <i class="fa-solid fa-users"></i>
-                            </div>
-                            <h5 class="selection-title">Cualquier barbero disponible</h5>
-                            <p class="selection-subtitle">Próximo Espacio Disponible</p>
-                        </div>
+                        <p class="text-muted">Cargando barberos...</p>
                     </div>
                     <div class="wizard-actions">
                         <div></div>
@@ -147,21 +99,7 @@
                 <div class="wizard-panel" id="panel-2">
                     <h4 class="wizard-step-title mb-4">Selecciona un servicio</h4>
                     <div class="selection-grid">
-                        <div class="selection-card" onclick="selectCard(this, 2)">
-                            <h5 class="selection-title mt-3">Corte de Cabello Clásico</h5>
-                            <p class="text-muted mb-2">45 mins</p>
-                            <p class="selection-subtitle">$29.00</p>
-                        </div>
-                        <div class="selection-card" onclick="selectCard(this, 2)">
-                            <h5 class="selection-title mt-3">Recorte de Barba</h5>
-                            <p class="text-muted mb-2">30 mins</p>
-                            <p class="selection-subtitle">$15.00</p>
-                        </div>
-                        <div class="selection-card" onclick="selectCard(this, 2)">
-                            <h5 class="selection-title mt-3">Paquete completo</h5>
-                            <p class="text-muted mb-2">90 mins</p>
-                            <p class="selection-subtitle">$50.00</p>
-                        </div>
+                        <p class="text-muted">Cargando servicios...</p>
                     </div>
                     <div class="wizard-actions">
                         <button class="btn btn-outline" onclick="prevStep(1)"><i class="fa-solid fa-arrow-left me-2"></i>Atras</button>
@@ -181,12 +119,7 @@
                         <div class="col-md-6">
                             <label class="text-muted mb-2 font-weight-bold">Horarios Disponibles</label>
                             <div class="time-slots">
-                                <div class="time-slot disabled">09:00 AM</div>
-                                <div class="time-slot" onclick="selectTime(this)">10:00 AM</div>
-                                <div class="time-slot disabled">11:00 AM</div>
-                                <div class="time-slot" onclick="selectTime(this)">13:00 PM</div>
-                                <div class="time-slot" onclick="selectTime(this)">14:30 PM</div>
-                                <div class="time-slot" onclick="selectTime(this)">16:00 PM</div>
+                                <p class="text-muted">Selecciona barbero, servicio y fecha.</p>
                             </div>
                         </div>
                     </div>
@@ -202,26 +135,7 @@
                     <h4 class="wizard-step-title mb-4 text-center">Confirma tu reserva</h4>
 
                     <div class="summary-box mx-auto" style="max-width: 500px;">
-                        <i class="fa-solid fa-calendar-check"></i>
-                        <h3 class="mb-4">Corte clásico</h3>
-
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Barbero:</span>
-                            <span class="text-white font-weight-bold">Mike Johnson</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Fecha:</span>
-                            <span class="text-white font-weight-bold">Mayo 15, 2026</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-4">
-                            <span class="text-muted">Hora:</span>
-                            <span class="text-white font-weight-bold">14:30 PM</span>
-                        </div>
-
-                        <div class="d-flex justify-content-between pt-3 border-top border-secondary">
-                            <span class="text-muted">Precio total:</span>
-                            <span style="color: var(--primary-gold); font-size: 1.5rem; font-family: 'Oswald', sans-serif;">$29.00</span>
-                        </div>
+                        <p class="text-muted mb-0">Completa los pasos anteriores para revisar tu cita.</p>
                     </div>
 
                     <div class="wizard-actions">
@@ -240,26 +154,26 @@
             <h3 class="section-title">Mi Perfil</h3>
 
             <div class="panel-card dashboard-form">
-                <form>
+                <form id="customerProfileForm">
                     <div class="row g-4">
                         <div class="col-md-6">
                             <label class="form-label">Nombre</label>
-                            <input type="text" class="form-control" value="Jane">
+                            <input type="text" class="form-control" id="profileFirstName" value="">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Apellido</label>
-                            <input type="text" class="form-control" value="Doe">
+                            <input type="text" class="form-control" id="profileLastName" value="">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Correo electrónico</label>
-                            <input type="email" class="form-control" value="jane.doe@email.com">
+                            <input type="email" class="form-control" id="profileEmail" value="">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" value="+012 345 6789">
+                            <input type="tel" class="form-control" id="profilePhone" value="">
                         </div>
                         <div class="col-12 text-end mt-4">
-                            <button type="button" class="btn btn-gold">Guardar Cambios</button>
+                            <button type="button" class="btn btn-gold" id="saveCustomerProfileBtn">Guardar Cambios</button>
                         </div>
                     </div>
                 </form>
@@ -271,6 +185,6 @@
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/dashboard-common.js"></script>
-    <script src="/js/customer-dashboard.js"></script>
+    <script src="/js/customer-dashboard.js?v=6"></script>
 </body>
 </html>

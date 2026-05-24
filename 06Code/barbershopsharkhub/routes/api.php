@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BarberAppointmentController;
 use App\Http\Controllers\Api\CustomerAppointmentController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ServiceController;
@@ -23,6 +24,12 @@ Route::middleware($sessionMiddleware)->group(function () {
 
     Route::apiResource('barber/services', ServiceController::class);
     Route::apiResource('barber/products', ProductController::class);
+
+    Route::prefix('barber')->group(function () {
+        Route::get('/appointments', [BarberAppointmentController::class, 'index']);
+        Route::patch('/appointments/{appointment}/confirm', [BarberAppointmentController::class, 'confirm']);
+        Route::patch('/appointments/{appointment}/cancel', [BarberAppointmentController::class, 'cancel']);
+    });
 
     Route::prefix('customer')->group(function () {
         Route::get('/barbers', [CustomerAppointmentController::class, 'barbers']);

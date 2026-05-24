@@ -79,20 +79,74 @@ function formatStatus(status) {
     return '<span class="badge bg-warning text-dark" style="padding: 8px 15px; font-size: 0.85rem;">Pendiente</span>'
 }
 
+function getCustomerName(user) {
+    return user?.name || user?.full_name || 'Cliente'
+}
+
+function splitFullName(fullName) {
+    const parts = String(fullName || '')
+        .trim()
+        .split(/\s+/)
+        .filter((part) => part.length > 0)
+
+    return {
+        firstName: parts.length > 0 ? parts[0] : '',
+        lastName: parts.length > 1 ? parts.slice(1).join(' ') : '',
+    }
+}
+
+function updateCustomerHeader(user) {
+    const name = getCustomerName(user)
+    const profileName = document.querySelector('.user-profile span')
+    const avatar = document.querySelector('.user-profile img')
+
+    if (profileName) {
+        profileName.textContent = name
+    }
+
+    if (avatar) {
+        avatar.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=222&color=D4AF37'
+        avatar.alt = name
+    }
+}
+
+function updateCustomerProfile(user) {
+    const name = getCustomerName(user)
+    const { firstName, lastName } = splitFullName(name)
+
+    const firstNameInput = document.getElementById('profileFirstName')
+    const lastNameInput = document.getElementById('profileLastName')
+    const emailInput = document.getElementById('profileEmail')
+    const phoneInput = document.getElementById('profilePhone')
+
+    if (firstNameInput) {
+        firstNameInput.value = firstName
+    }
+
+    if (lastNameInput) {
+        lastNameInput.value = lastName
+    }
+
+    if (emailInput) {
+        emailInput.value = user?.email || ''
+    }
+
+    if (phoneInput) {
+        phoneInput.value = user?.phone || ''
+    }
+}
+
 async function loadMe() {
     try {
         const result = await apiFetch('/api/me')
-        state.user = result.user
+        state.user = result.user || null
 
-        const name = state.user.name || 'Cliente'
-        const profileName = document.querySelector('.user-profile span')
-        const avatar = document.querySelector('.user-profile img')
-
-        if (profileName) profileName.textContent = name
-        if (avatar) {
-            avatar.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=222&color=D4AF37'
-            avatar.alt = name
+        if (!state.user) {
+            throw new Error('No se encontró información del usuario autenticado.')
         }
+
+        updateCustomerHeader(state.user)
+        updateCustomerProfile(state.user)
     } catch (error) {
         window.location.href = '/customer/login'
     }
@@ -379,7 +433,7 @@ async function confirmAppointment() {
         return
     }
 
-    const button = document.querySelector('#panel-4 .btn-gold')
+    const button = document.getElementById('confirmAppointmentBtn')
     const originalText = button?.innerHTML
 
     try {
@@ -455,6 +509,13 @@ function configureEvents() {
     const confirmButton = document.getElementById('confirmAppointmentBtn')
     if (confirmButton) {
         confirmButton.addEventListener('click', confirmAppointment)
+    }
+
+    const profileForm = document.getElementById('customerProfileForm')
+    if (profileForm) {
+        profileForm.addEventListener('submit', function (event) {
+            event.preventDefault()
+        })
     }
 }
 

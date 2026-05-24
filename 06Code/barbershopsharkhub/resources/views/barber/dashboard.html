@@ -33,10 +33,10 @@
             </div>
             <div class="user-profile">
                 <div class="text-end d-none d-sm-block">
-                    <h6 class="mb-0">Mike Johnson</h6>
-                    <small class="text-muted">Barbero Senior</small>
+                    <h6 class="mb-0" id="barberProfileName">Cargando...</h6>
+                    <small class="text-muted" id="barberProfileRole">Barbero</small>
                 </div>
-                <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=D4AF37&color=000" alt="Barber" class="avatar">
+                <img id="barberProfileAvatar" src="https://ui-avatars.com/api/?name=Barbero&background=D4AF37&color=000" alt="Barber" class="avatar">
             </div>
         </header>
 
@@ -45,20 +45,20 @@
             <div class="row g-4 mb-5">
                 <div class="col-md-6">
                     <div class="stat-card">
-                        <div class="stat-info"><h3>5</h3><p>Citas de hoy</p></div>
+                        <div class="stat-info"><h3 id="todayAppointmentsCount">0</h3><p>Citas de hoy</p></div>
                         <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="stat-card">
-                        <div class="stat-info"><h3>2</h3><p>Solicitudes Pendientes</p></div>
+                        <div class="stat-info"><h3 id="pendingAppointmentsCount">0</h3><p>Solicitudes pendientes</p></div>
                         <div class="stat-icon"><i class="fa-solid fa-clipboard-list"></i></div>
                     </div>
                 </div>
             </div>
             <div class="section-title">
                 <h4>Agenda de citas</h4>
-                <input type="date" class="form-control form-control-sm" style="width: auto;">
+                <input type="date" id="appointmentDateFilter" class="form-control form-control-sm" style="width: auto;">
             </div>
             <div class="table-responsive">
                 <table class="table table-dashboard table-hover">
@@ -68,26 +68,12 @@
                             <th>Cliente</th>
                             <th>Servicio</th>
                             <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="barberAppointmentsTableBody">
                         <tr>
-                            <td>10:00 AM</td>
-                            <td>Alex Turner</td>
-                            <td>Corte Clásico</td>
-                            <td><span class="status-badge status-pending">Pendiente</span></td>
-                        </tr>
-                        <tr>
-                            <td>11:30 AM</td>
-                            <td>Chris Evans</td>
-                            <td>Perfilado de barba</td>
-                            <td><span class="status-badge status-confirmed">Confirmado</span></td>
-                        </tr>
-                        <tr>
-                            <td>14:00 PM</td>
-                            <td>John Doe</td>
-                            <td>Teñido del cabello</td>
-                            <td><span class="status-badge status-confirmed">Confirmado</span></td>
+                            <td colspan="5" class="text-center text-muted">Cargando citas...</td>
                         </tr>
                     </tbody>
                 </table>
