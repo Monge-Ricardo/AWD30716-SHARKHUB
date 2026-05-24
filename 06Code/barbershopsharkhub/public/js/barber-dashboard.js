@@ -94,6 +94,40 @@ function formatStatus(status) {
     return '<span class="status-badge status-pending">Pendiente</span>'
 }
 
+function getAgendaDateFromUrl() {
+    const params = new URLSearchParams(window.location.search)
+
+    return params.get('date')
+}
+
+function updateAgendaDateInUrl(dateValue) {
+    const baseUrl = '/barber/dashboard/agenda'
+    const nextUrl = dateValue
+        ? `${baseUrl}?date=${encodeURIComponent(dateValue)}`
+        : baseUrl
+
+    const currentUrl = window.location.pathname + window.location.search
+
+    if (currentUrl !== nextUrl) {
+        window.history.pushState(
+            {
+                tabId: 'agenda',
+                date: dateValue
+            },
+            '',
+            nextUrl
+        )
+    }
+}
+
+function getBarberAppointmentsEndpoint(dateValue = null) {
+    if (!dateValue) {
+        return '/api/barber/appointments'
+    }
+
+    return `/api/barber/appointments?date=${encodeURIComponent(dateValue)}`
+}
+
 async function loadMe() {
     const result = await apiFetch('/api/me')
     state.user = result.user
@@ -116,10 +150,13 @@ async function loadMe() {
     }
 }
 
-async function loadBarberAppointments() {
+async function loadBarberAppointments(dateValue = null) {
     const tableBody = document.getElementById('barberAppointmentsTableBody')
 
     if (!tableBody) return
+
+    const selectedDate = dateValue || getAgendaDateFromUrl()
+    const endpoint = getBarberAppointmentsEndpoint(selectedDate)
 
     tableBody.innerHTML = `
         <tr>
@@ -128,14 +165,7 @@ async function loadBarberAppointments() {
     `
 
     try {
-        const dateFilter = document.getElementById('appointmentDateFilter')?.value || ''
-        let url = '/api/barber/appointments'
-
-        if (dateFilter) {
-            url += '?date=' + encodeURIComponent(dateFilter)
-        }
-
-        const result = await apiFetch(url)
+        const result = await apiFetch(endpoint)
         state.appointments = result.data || []
 
         const todayCounter = document.getElementById('todayAppointmentsCount')
@@ -189,7 +219,7 @@ async function confirmBarberAppointment(appointmentId) {
             method: 'PATCH',
         })
 
-        await loadBarberAppointments()
+        await loadBarberAppointments(getAgendaDateFromUrl())
     } catch (error) {
         alert(error.message)
     }
@@ -699,8 +729,18 @@ function configureEvents() {
     }
 
     const appointmentDateFilter = document.getElementById('appointmentDateFilter')
+
     if (appointmentDateFilter) {
-        appointmentDateFilter.addEventListener('change', loadBarberAppointments)
+        const dateFromUrl = getAgendaDateFromUrl()
+
+        if (dateFromUrl) {
+            appointmentDateFilter.value = dateFromUrl
+        }
+
+        appointmentDateFilter.addEventListener('change', function () {
+            updateAgendaDateInUrl(this.value)
+            loadBarberAppointments(this.value)
+        })
     }
 
     setupServiceActions()
@@ -715,7 +755,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     try {
         await loadMe()
         await Promise.all([
-            loadBarberAppointments(),
+            loadBarberAppointments(getAgendaDateFromUrl()),
             loadServices(),
             loadProducts(),
         ])
