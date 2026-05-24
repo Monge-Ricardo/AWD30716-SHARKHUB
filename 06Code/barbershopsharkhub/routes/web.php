@@ -2,37 +2,44 @@
 
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Public information pages
+|--------------------------------------------------------------------------
+| Visible URLs such as /about, /service or /contact render the main layout.
+| JavaScript then loads the corresponding partial content from /info/content.
+*/
+
 Route::get('/', function () {
     return view('info.index');
 });
 
-Route::get('/about', function () {
-    return view('info.about');
+Route::get('/info/content/{section}', function (string $section) {
+    $views = [
+        'about' => 'info.about',
+        'service' => 'info.service',
+        'price' => 'info.price',
+        'team' => 'info.team',
+        'open' => 'info.open',
+        'testimonial' => 'info.testimonial',
+        'contact' => 'info.contact',
+        'not-found' => 'info.404',
+    ];
+
+    abort_unless(array_key_exists($section, $views), 404);
+
+    return view($views[$section]);
 });
 
-Route::get('/contact', function () {
-    return view('info.contact');
-});
+Route::get('/{page}', function () {
+    return view('info.index');
+})->where('page', 'about|service|price|team|open|testimonial|contact|404');
 
-Route::get('/price', function () {
-    return view('info.price');
-});
-
-Route::get('/service', function () {
-    return view('info.service');
-});
-
-Route::get('/team', function () {
-    return view('info.team');
-});
-
-Route::get('/testimonial', function () {
-    return view('info.testimonial');
-});
-
-Route::get('/open', function () {
-    return view('info.open');
-});
+/*
+|--------------------------------------------------------------------------
+| Dashboards
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/barber/dashboard/{tab?}', function ($tab = 'agenda') {
     return view('barber.dashboard');
@@ -46,9 +53,11 @@ Route::get('/owner/dashboard', function () {
     return view('owner.dashboard');
 });
 
-Route::get('/404', function () {
-    return view('info.404');
-});
+/*
+|--------------------------------------------------------------------------
+| Customer authentication views
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/customer/login', function () {
     return view('customer.auth.login');

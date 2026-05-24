@@ -56,20 +56,57 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     const mainContent = document.getElementById("main-content");
-    const sectionLinks = document.querySelectorAll("[data-section]");
+    const homeContent = mainContent ? mainContent.innerHTML : "";
 
     const sectionRoutes = {
-        home: "/",
-        about: "/about",
-        service: "/service",
-        price: "/price",
-        team: "/team",
-        open: "/open",
-        testimonial: "/testimonial",
-        contact: "/contact",
-        notFound: "/404",
-        login: "/customer/login",
-        register: "/customer/register"
+        home: {
+            visibleUrl: "/",
+            contentUrl: null
+        },
+        about: {
+            visibleUrl: "/about",
+            contentUrl: "/info/content/about"
+        },
+        service: {
+            visibleUrl: "/service",
+            contentUrl: "/info/content/service"
+        },
+        price: {
+            visibleUrl: "/price",
+            contentUrl: "/info/content/price"
+        },
+        team: {
+            visibleUrl: "/team",
+            contentUrl: "/info/content/team"
+        },
+        open: {
+            visibleUrl: "/open",
+            contentUrl: "/info/content/open"
+        },
+        testimonial: {
+            visibleUrl: "/testimonial",
+            contentUrl: "/info/content/testimonial"
+        },
+        contact: {
+            visibleUrl: "/contact",
+            contentUrl: "/info/content/contact"
+        },
+        notFound: {
+            visibleUrl: "/404",
+            contentUrl: "/info/content/not-found"
+        }
+    };
+
+    const pathToSection = {
+        "/": "home",
+        "/about": "about",
+        "/service": "service",
+        "/price": "price",
+        "/team": "team",
+        "/open": "open",
+        "/testimonial": "testimonial",
+        "/contact": "contact",
+        "/404": "notFound"
     };
 
     function extractMainContent(htmlText) {
@@ -80,8 +117,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!parsedMainContent) {
             return `
                 <div class="container py-5">
-                    <h1 class="text-uppercase">Content not found</h1>
-                    <p>The requested content could not be loaded.</p>
+                    <h1 class="text-uppercase">Contenido no encontrado</h1>
+                    <p>No se pudo cargar el contenido solicitado.</p>
                 </div>
             `;
         }
@@ -90,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function setActiveLink(sectionName) {
-        sectionLinks.forEach(function (link) {
+        document.querySelectorAll("[data-section]").forEach(function (link) {
             link.classList.remove("active");
 
             if (link.getAttribute("data-section") === sectionName) {
@@ -131,14 +168,44 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function loadSection(sectionName) {
+    function finishSectionLoad(sectionName, shouldScroll) {
+        setActiveLink(sectionName);
+        closeNavbarMenu();
+        restartTemplateAnimations();
+
+        if (shouldScroll) {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+    }
+
+    function loadSection(sectionName, pushUrl = true, shouldScroll = true) {
         const route = sectionRoutes[sectionName];
 
         if (!route || !mainContent) {
             return;
         }
 
-        fetch(route)
+        if (sectionName === "home") {
+            mainContent.innerHTML = homeContent;
+
+            if (pushUrl && window.location.pathname !== route.visibleUrl) {
+                window.history.pushState({ sectionName: sectionName }, "", route.visibleUrl);
+            }
+
+            finishSectionLoad(sectionName, shouldScroll);
+            return;
+        }
+
+        mainContent.innerHTML = `
+            <div class="container py-5">
+                <p class="text-primary text-uppercase">Cargando...</p>
+            </div>
+        `;
+
+        fetch(route.contentUrl)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("Section could not be loaded");
@@ -148,9 +215,56 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(function (htmlText) {
                 mainContent.innerHTML = extractMainContent(htmlText);
-                setActiveLink(sectionName);
+
+                if (pushUrl && window.location.pathname !== route.visibleUrl) {
+                    window.history.pushState({ sectionName: sectionName }, "", route.visibleUrl);
+                }
+
+                finishSectionLoad(sectionName, shouldScroll);
+            })
+            .catch(function (error) {
+                console.error(error);
+
+                mainContent.innerHTML = `
+                    <div class="container py-5">
+                        <h1 class="text-uppercase">Error</h1>
+                        <p>No se pudo cargar la sección seleccionada.</p>
+                    </div>
+                `;
+            });
+    }
+
+    function loadSectionFromCurrentPath() {
+        const sectionName = pathToSection[window.location.pathname] || "home";
+        loadSection(sectionName, false, false);
+    }
+
+    function loadAuthSection(url, pushUrl = false) {
+        if (!mainContent) {
+            return;
+        }
+
+        mainContent.innerHTML = `
+            <div class="container py-5">
+                <p class="text-primary text-uppercase">Cargando...</p>
+            </div>
+        `;
+
+        fetch(url)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("Auth section could not be loaded");
+                }
+
+                return response.text();
+            })
+            .then(function (htmlText) {
+                mainContent.innerHTML = extractMainContent(htmlText);
                 closeNavbarMenu();
-                restartTemplateAnimations();
+
+                if (pushUrl && window.location.pathname !== url) {
+                    window.history.pushState({ authUrl: url }, "", url);
+                }
 
                 window.scrollTo({
                     top: 0,
@@ -163,33 +277,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 mainContent.innerHTML = `
                     <div class="container py-5">
                         <h1 class="text-uppercase">Error</h1>
-                        <p>The selected section could not be loaded.</p>
+                        <p>No se pudo cargar el formulario solicitado.</p>
                     </div>
                 `;
             });
     }
 
-    sectionLinks.forEach(function (link) {
-        link.addEventListener("click", function (event) {
+    document.body.addEventListener("click", function (event) {
+        const sectionLink = event.target.closest("[data-section]");
+
+        if (sectionLink) {
             event.preventDefault();
 
-            const sectionName = this.getAttribute("data-section");
-            loadSection(sectionName);
-        });
-    });
+            const sectionName = sectionLink.getAttribute("data-section");
+            loadSection(sectionName, true, true);
+            return;
+        }
 
-
-    document.body.addEventListener("click", function (event) {
         const link = event.target.closest("a");
-        if (link) {
-            const href = link.getAttribute("href");
-            if (href === "/customer/login") {
-                event.preventDefault();
-                loadSection("login");
-            } else if (href === "/customer/register") {
-                event.preventDefault();
-                loadSection("register");
-            }
+
+        if (!link) {
+            return;
+        }
+
+        const href = link.getAttribute("href");
+
+        if (href === "/customer/login" || href === "/customer/register") {
+            event.preventDefault();
+            loadAuthSection(href, true);
         }
     });
 
@@ -200,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const form = event.target;
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerHTML;
-            
+
             submitBtn.innerHTML = 'Cargando... <i class="fas fa-spinner fa-spin ms-2"></i>';
             submitBtn.disabled = true;
 
@@ -210,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
@@ -237,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const form = event.target;
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerHTML;
-            
+
             submitBtn.innerHTML = 'Registrando... <i class="fas fa-spinner fa-spin ms-2"></i>';
             submitBtn.disabled = true;
 
@@ -247,7 +362,7 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 const response = await fetch('/api/auth/register', {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
@@ -257,7 +372,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (result.success) {
                     alert('Registro exitoso. Ahora puedes iniciar sesión.');
-                    loadSection("login");
+                    loadAuthSection("/customer/login", true);
                 } else {
                     alert('Error: ' + result.message);
                 }
@@ -270,5 +385,19 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-});
 
+    window.addEventListener("popstate", function () {
+        if (window.location.pathname === "/customer/login" || window.location.pathname === "/customer/register") {
+            loadAuthSection(window.location.pathname, false);
+            return;
+        }
+
+        loadSectionFromCurrentPath();
+    });
+
+    if (window.location.pathname === "/customer/login" || window.location.pathname === "/customer/register") {
+        loadAuthSection(window.location.pathname, false);
+    } else {
+        loadSectionFromCurrentPath();
+    }
+});
