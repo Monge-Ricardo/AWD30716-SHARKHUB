@@ -34,9 +34,9 @@ Route::get('/open', function () {
     return view('info.open');
 });
 
-Route::get('/barber/dashboard', function () {
+Route::get('/barber/dashboard/{tab?}', function ($tab = 'agenda') {
     return view('barber.dashboard');
-});
+})->where('tab', 'agenda|services|products');
 
 Route::get('/customer/dashboard', function () {
     return view('customer.dashboard');
