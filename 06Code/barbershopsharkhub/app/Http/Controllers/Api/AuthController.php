@@ -181,4 +181,44 @@ class AuthController extends Controller
             'redirect' => '/',
         ]);
     }
+    public function me()
+    {
+        $userId = session('user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No hay una sesión activa.',
+            ], 401);
+        }
+
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El usuario de la sesión no existe en la tabla users.',
+            ], 404);
+        }
+
+        $membership = BarbershopMember::with('barbershop')
+            ->where('user_id', $user->id)
+            ->where('status', 'active')
+            ->first();
+
+        return response()->json([
+            'success' => true,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->full_name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'avatar_url' => $user->avatar_url,
+                'role' => $membership?->role ?? 'customer',
+                'barbershop_id' => $membership?->barbershop_id,
+                'barbershop_name' => $membership?->barbershop?->name,
+            ],
+        ]);
+    }
+
 }
