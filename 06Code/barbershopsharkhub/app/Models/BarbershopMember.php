@@ -22,6 +22,7 @@ class BarbershopMember extends Model
         'user_id',
         'role',
         'status',
+        'joined_at',
     ];
 
     public function user()

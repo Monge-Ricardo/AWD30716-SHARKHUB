@@ -19,13 +19,16 @@ class Barbershop extends Model
     protected $fillable = [
         'id',
         'name',
+        'slug',
         'description',
+        'logo_url',
         'address',
         'phone',
         'email',
-        'image_url',
+        'invite_code',
         'is_active',
         'created_at',
+        'updated_at',
     ];
 
     public function members()

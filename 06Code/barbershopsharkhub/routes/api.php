@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BarberAppointmentController;
 use App\Http\Controllers\Api\CustomerAppointmentController;
+use App\Http\Controllers\Api\OwnerController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ServiceController;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -31,6 +32,20 @@ Route::middleware($sessionMiddleware)->group(function () {
         Route::patch('/appointments/{appointment}/cancel', [BarberAppointmentController::class, 'cancel']);
     });
 
+
+
+    Route::prefix('owner')->group(function () {
+        Route::get('/overview', [OwnerController::class, 'overview']);
+        Route::get('/barbershop', [OwnerController::class, 'showBarbershop']);
+        Route::put('/barbershop', [OwnerController::class, 'updateBarbershop']);
+
+        Route::get('/barbers', [OwnerController::class, 'barbers']);
+        Route::post('/barbers', [OwnerController::class, 'storeBarber']);
+        Route::patch('/barbers/{member}/status', [OwnerController::class, 'updateBarberStatus']);
+
+        Route::get('/appointments', [OwnerController::class, 'appointments']);
+        Route::patch('/appointments/{appointment}/status', [OwnerController::class, 'updateAppointmentStatus']);
+    });
     Route::prefix('customer')->group(function () {
         Route::get('/barbers', [CustomerAppointmentController::class, 'barbers']);
         Route::get('/services', [CustomerAppointmentController::class, 'services']);

@@ -12,6 +12,13 @@ const tabRoutes = {
     '/barber/dashboard/services': 'services',
     '/barber/dashboard/products': 'products',
     
+    // Owner
+    '/owner/dashboard': 'dashboard',
+    '/owner/dashboard/dashboard': 'dashboard',
+    '/owner/dashboard/barbershop-info': 'barbershop-info',
+    '/owner/dashboard/manage-barbers': 'manage-barbers',
+    '/owner/dashboard/global-agenda': 'global-agenda',
+    
     // Customer
     '/customer/dashboard': 'my-appointments',
     '/customer/dashboard/my-appointments': 'my-appointments',
