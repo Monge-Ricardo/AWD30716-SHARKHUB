@@ -19,6 +19,7 @@ class Barbershop extends Model
     protected $fillable = [
         'id',
         'name',
+        'slug',
         'description',
         'address',
         'phone',

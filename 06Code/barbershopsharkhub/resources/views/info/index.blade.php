@@ -34,7 +34,17 @@
 
     <!-- Template Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
-    <link href="/css/forms.css" rel="stylesheet">
+    <link href="/css/forms.css?v={{ time() }}" rel="stylesheet">
+
+    <!-- Supabase & Globals -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        window.SUPABASE_URL = '{{ env("SUPABASE_URL") }}';
+        window.SUPABASE_ANON_KEY = '{{ env("SUPABASE_ANON_KEY") }}';
+        if (window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+            window.supabaseClient = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+        }
+    </script>
 </head>
 
 <body>
@@ -576,7 +586,7 @@
     <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="/js/main.js"></script>
+    <script src="/js/main.js?v={{ time() }}"></script>
 </body>
 
 </html>

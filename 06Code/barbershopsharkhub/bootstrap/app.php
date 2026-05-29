@@ -12,7 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Habilitar sesiones de estado para la API (Laravel 11 way)
+        $middleware->statefulApi();
+
+        // Registrar alias para el middleware de sesión
+        $middleware->alias([
+            'session.auth' => \App\Http\Middleware\SessionAuth::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

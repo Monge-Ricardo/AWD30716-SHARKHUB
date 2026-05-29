@@ -1,3 +1,10 @@
+// Helper global para obtener cookies (CSRF)
+function getCookie(name) {
+    let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return decodeURIComponent(match[2]);
+    return null;
+}
+
 (function ($) {
     "use strict";
 
@@ -193,6 +200,49 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Supabase Global Auth (Event Delegation for dynamically loaded buttons)
+    document.body.addEventListener("click", async function (event) {
+        // Login con Google
+        if (event.target.closest('#btnGoogleLogin')) {
+            event.preventDefault();
+            console.log("Iniciando login con Google (Global)...");
+            try {
+                if (!window.supabaseClient) throw new Error("Supabase Client no está inicializado");
+                const { error } = await window.supabaseClient.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: { redirectTo: window.location.origin + '/customer/dashboard' }
+                });
+                if (error) {
+                    console.error("Error OAuth:", error);
+                    alert('Error iniciando sesión con Google: ' + error.message);
+                }
+            } catch (err) {
+                console.error("Excepción en OAuth:", err);
+                alert("Ocurrió un error inesperado al intentar conectar con Google.");
+            }
+        }
+        
+        // Registro con Google
+        if (event.target.closest('#btnGoogleRegister')) {
+            event.preventDefault();
+            console.log("Iniciando registro con Google (Global)...");
+            try {
+                if (!window.supabaseClient) throw new Error("Supabase Client no está inicializado");
+                const { error } = await window.supabaseClient.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: { redirectTo: window.location.origin + '/customer/dashboard' }
+                });
+                if (error) {
+                    console.error("Error OAuth:", error);
+                    alert('Error registrando con Google: ' + error.message);
+                }
+            } catch (err) {
+                console.error("Excepción en OAuth:", err);
+                alert("Ocurrió un error inesperado al intentar conectar con Google.");
+            }
+        }
+    });
+
     // Handle Authentication Forms
     document.body.addEventListener("submit", async function (event) {
         if (event.target.matches("#loginForm")) {
@@ -210,15 +260,26 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
+                    credentials: 'same-origin', // <--- IMPORTANTE para que el navegador guarde la cookie
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') // <--- TOKEN DE SEGURIDAD
                     },
                     body: JSON.stringify(data)
                 });
                 const result = await response.json();
 
                 if (result.success) {
+                    // Guardar sesión para que los dashboards la lean
+                    sessionStorage.setItem('sharkhub_session', JSON.stringify({
+                        user_id:              result.user?.id,
+                        user_name:            result.user?.name,
+                        user_email:           result.user?.email,
+                        role:                 result.user?.role,
+                        barbershop_id:        result.user?.barbershop_id,
+                        supabase_access_token: result.access_token || result.token || null,
+                    }));
                     window.location.href = result.redirect;
                 } else {
                     alert('Error: ' + result.message);
@@ -247,9 +308,11 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 const response = await fetch('/api/auth/register', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
                     },
                     body: JSON.stringify(data)
                 });
