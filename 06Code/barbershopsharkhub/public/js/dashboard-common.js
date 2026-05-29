@@ -5,6 +5,8 @@
 
 'use strict'
 
+let dashboardSupabaseClientPromise = null
+
 const tabRoutes = {
     // Barber
     '/barber/dashboard': 'agenda',
@@ -87,6 +89,108 @@ function configureDashboardLinks() {
     })
 }
 
+async function getDashboardSupabaseClient() {
+    if (dashboardSupabaseClientPromise) {
+        return dashboardSupabaseClientPromise
+    }
+
+    if (!window.supabase) {
+        return null
+    }
+
+    dashboardSupabaseClientPromise = fetch('/api/auth/supabase-config', {
+        headers: {
+            'Accept': 'application/json',
+        },
+        credentials: 'same-origin',
+    })
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('No se pudo obtener la configuración de Supabase.')
+            }
+
+            return response.json()
+        })
+        .then(function (config) {
+            return window.supabase.createClient(config.url, config.anonKey, {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: true,
+                },
+            })
+        })
+
+    return dashboardSupabaseClientPromise
+}
+
+function clearSupabaseStorage() {
+    const storages = [window.localStorage, window.sessionStorage]
+
+    storages.forEach(function (storage) {
+        if (!storage) {
+            return
+        }
+
+        Object.keys(storage).forEach(function (key) {
+            if (key.startsWith('sb-') || key.toLowerCase().includes('supabase')) {
+                storage.removeItem(key)
+            }
+        })
+    })
+}
+
+async function closeSupabaseSession() {
+    try {
+        const supabaseClient = await getDashboardSupabaseClient()
+
+        if (supabaseClient) {
+            await supabaseClient.auth.signOut()
+        }
+    } catch (error) {
+        console.warn('No se pudo cerrar la sesión local de Supabase.', error)
+    } finally {
+        clearSupabaseStorage()
+    }
+}
+
+async function performDashboardLogout(event) {
+    event.preventDefault()
+
+    const logoutLink = event.currentTarget
+    const originalContent = logoutLink.innerHTML
+
+    logoutLink.classList.add('disabled')
+    logoutLink.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cerrando sesión'
+
+    try {
+        await closeSupabaseSession()
+
+        await fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            credentials: 'same-origin',
+        })
+
+        window.location.replace('/customer/login')
+    } catch (error) {
+        console.error(error)
+        window.location.replace('/auth/logout')
+    } finally {
+        logoutLink.innerHTML = originalContent
+        logoutLink.classList.remove('disabled')
+    }
+}
+
+function configureDashboardLogout() {
+    document.querySelectorAll('[data-logout]').forEach(function (logoutLink) {
+        logoutLink.addEventListener('click', performDashboardLogout)
+    })
+}
+
 function configureSidebarToggle() {
     const toggleBtn = document.querySelector('.sidebar-toggle')
     const sidebar = document.querySelector('.sidebar')
@@ -101,6 +205,7 @@ function configureSidebarToggle() {
 document.addEventListener('DOMContentLoaded', function () {
     configureSidebarToggle()
     configureDashboardLinks()
+    configureDashboardLogout()
     activateTabFromCurrentUrl()
 })
 

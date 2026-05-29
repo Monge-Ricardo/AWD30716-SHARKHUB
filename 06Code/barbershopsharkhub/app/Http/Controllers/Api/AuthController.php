@@ -171,16 +171,19 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->flush();
+        $request->session()->flush();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json([
             'success' => true,
             'message' => 'Sesión cerrada correctamente.',
-            'redirect' => '/',
+            'redirect' => '/customer/login',
         ]);
     }
+
     public function me()
     {
         $userId = session('user_id');
@@ -221,4 +224,99 @@ class AuthController extends Controller
         ]);
     }
 
+    public function googleSession(Request $request)
+    {
+        $validatedData = $request->validate([
+            'access_token' => 'required|string',
+        ]);
+
+        $supabaseUrl = rtrim(config('services.supabase.url'), '/');
+        $supabaseAnonKey = config('services.supabase.anon_key');
+
+        if (!$supabaseUrl || !$supabaseAnonKey) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Supabase no está configurado correctamente.',
+            ], 500);
+        }
+
+        $userResponse = Http::withHeaders([
+            'apikey' => $supabaseAnonKey,
+            'Authorization' => 'Bearer ' . $validatedData['access_token'],
+            'Accept' => 'application/json',
+        ])->get($supabaseUrl . '/auth/v1/user');
+
+        if (!$userResponse->successful()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se pudo validar la sesión de Google con Supabase.',
+            ], 401);
+        }
+
+        $authUser = $userResponse->json();
+
+        $authUserId = $authUser['id'] ?? null;
+        $email = $authUser['email'] ?? null;
+        $metadata = $authUser['user_metadata'] ?? [];
+
+        if (!$authUserId || !$email) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Supabase no devolvió un usuario válido.',
+            ], 500);
+        }
+
+        $fullName = $metadata['full_name']
+            ?? $metadata['name']
+            ?? explode('@', $email)[0];
+
+        $avatarUrl = $metadata['avatar_url']
+            ?? $metadata['picture']
+            ?? null;
+
+        $user = User::updateOrCreate(
+            ['id' => $authUserId],
+            [
+                'full_name' => $fullName,
+                'email' => $email,
+                'avatar_url' => $avatarUrl,
+            ]
+        );
+
+        $membership = BarbershopMember::where('user_id', $user->id)
+            ->where('status', 'active')
+            ->first();
+
+        session([
+            'user_id' => $user->id,
+            'user_name' => $user->full_name,
+            'user_email' => $user->email,
+            'role' => $membership?->role,
+            'barbershop_id' => $membership?->barbershop_id,
+            'supabase_access_token' => $validatedData['access_token'],
+        ]);
+
+        $redirectUrl = '/customer/dashboard';
+
+        if ($membership && $membership->role === 'owner') {
+            $redirectUrl = '/owner/dashboard';
+        }
+
+        if ($membership && $membership->role === 'barber') {
+            $redirectUrl = '/barber/dashboard';
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Inicio de sesión con Google correcto.',
+            'redirect' => $redirectUrl,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->full_name,
+                'email' => $user->email,
+                'role' => $membership?->role ?? 'customer',
+                'barbershop_id' => $membership?->barbershop_id,
+            ],
+        ]);
+    }
 }

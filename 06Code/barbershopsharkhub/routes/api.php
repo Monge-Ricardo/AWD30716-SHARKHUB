@@ -22,6 +22,14 @@ Route::middleware($sessionMiddleware)->group(function () {
     Route::post('/auth/login', [AuthController::class, 'login']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/auth/supabase-config', function () {
+        return response()->json([
+            'url' => rtrim(config('services.supabase.url'), '/'),
+            'anonKey' => config('services.supabase.anon_key'),
+        ]);
+    });
+
+    Route::post('/auth/google/session', [AuthController::class, 'googleSession']);
 
     Route::apiResource('barber/services', ServiceController::class);
     Route::apiResource('barber/products', ProductController::class);

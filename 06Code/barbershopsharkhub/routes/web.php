@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,22 +36,80 @@ Route::get('/{page}', function () {
     return view('info.index');
 })->where('page', 'about|service|price|team|open|testimonial|contact|404');
 
+Route::get('/auth/logout', function (Request $request) {
+    $request->session()->flush();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/customer/login')
+        ->withHeaders([
+            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ]);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Protected dashboard helpers
+|--------------------------------------------------------------------------
+| The dashboard views must not be served after logout or without a valid
+| Laravel session. If the user opens a saved dashboard URL, a temporary
+| access-denied page is shown for the activity and then returns to login.
+*/
+
+$sessionExpiredResponse = function (string $message = 'La sesión no está activa o ya fue cerrada.', string $redirectUrl = '/customer/login') {
+    return response()
+        ->view('errors.session-expired', [
+            'message' => $message,
+            'redirectUrl' => $redirectUrl,
+            'seconds' => 7,
+        ], 401)
+        ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        ->header('Pragma', 'no-cache')
+        ->header('Expires', '0');
+};
+
+$protectedDashboard = function (string $view, string $requiredRole, string $loginUrl = '/customer/login') use ($sessionExpiredResponse) {
+    if (!session('user_id')) {
+        return $sessionExpiredResponse(
+            'No se puede acceder al panel porque la sesión fue cerrada o no existe una sesión activa.',
+            $loginUrl
+        );
+    }
+
+    $currentRole = session('role') ?: 'customer';
+
+    if ($currentRole !== $requiredRole) {
+        return $sessionExpiredResponse(
+            'La sesión actual no tiene permisos para acceder a este panel.',
+            $loginUrl
+        );
+    }
+
+    return response()
+        ->view($view)
+        ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        ->header('Pragma', 'no-cache')
+        ->header('Expires', '0');
+};
+
 /*
 |--------------------------------------------------------------------------
 | Dashboards
 |--------------------------------------------------------------------------
 */
 
-Route::get('/barber/dashboard/{tab?}', function ($tab = 'agenda') {
-    return view('barber.dashboard');
+Route::get('/barber/dashboard/{tab?}', function ($tab = 'agenda') use ($protectedDashboard) {
+    return $protectedDashboard('barber.dashboard', 'barber', '/customer/login');
 })->where('tab', 'agenda|services|products');
 
-Route::get('/customer/dashboard/{tab?}', function ($tab = 'my-appointments') {
-    return view('customer.dashboard');
+Route::get('/customer/dashboard/{tab?}', function ($tab = 'my-appointments') use ($protectedDashboard) {
+    return $protectedDashboard('customer.dashboard', 'customer', '/customer/login');
 })->where('tab', 'my-appointments|book-appointment|profile');
 
-Route::get('/owner/dashboard/{tab?}', function ($tab = 'dashboard') {
-    return view('owner.dashboard');
+Route::get('/owner/dashboard/{tab?}', function ($tab = 'dashboard') use ($protectedDashboard) {
+    return $protectedDashboard('owner.dashboard', 'owner', '/customer/login');
 })->where('tab', 'dashboard|barbershop-info|manage-barbers|global-agenda');
 
 /*
@@ -65,4 +124,14 @@ Route::get('/customer/login', function () {
 
 Route::get('/customer/register', function () {
     return view('customer.auth.register');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Google callback
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/auth/google/callback', function () {
+    return view('customer.auth.google-callback');
 });

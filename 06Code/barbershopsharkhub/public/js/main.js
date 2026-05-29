@@ -1,3 +1,5 @@
+let supabaseClientPromise = null;
+
 (function ($) {
     "use strict";
 
@@ -53,6 +55,36 @@
 
 
 })(jQuery);
+
+async function getSupabaseAuthClient() {
+    if (supabaseClientPromise) {
+        return supabaseClientPromise;
+    }
+
+    supabaseClientPromise = fetch('/api/auth/supabase-config', {
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('No se pudo obtener la configuración de Supabase.');
+            }
+
+            return response.json();
+        })
+        .then(function (config) {
+            return window.supabase.createClient(config.url, config.anonKey, {
+                auth: {
+                    persistSession: true,
+                    autoRefreshToken: true,
+                    detectSessionInUrl: true
+                }
+            });
+        });
+
+    return supabaseClientPromise;
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     const mainContent = document.getElementById("main-content");
@@ -285,6 +317,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.body.addEventListener("click", function (event) {
         const sectionLink = event.target.closest("[data-section]");
+
+        const googleLoginBtn = event.target.closest("#googleLoginBtn");
+
+        if (googleLoginBtn) {
+            event.preventDefault();
+
+            googleLoginBtn.disabled = true;
+            googleLoginBtn.innerHTML = 'Redirigiendo... <i class="fas fa-spinner fa-spin ms-2"></i>';
+
+            getSupabaseAuthClient()
+                .then(function (supabaseClient) {
+                    return supabaseClient.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: window.location.origin + '/auth/google/callback',
+                            queryParams: {
+                                prompt: 'select_account',
+                            },
+                        },
+                    })
+                })
+                .catch(function (error) {
+                    alert('No se pudo iniciar sesión con Google.');
+                    console.error(error);
+
+                    googleLoginBtn.disabled = false;
+                    googleLoginBtn.innerHTML = 'Continuar con Google <i class="fab fa-google ms-2"></i>';
+                });
+
+            return;
+        }
 
         if (sectionLink) {
             event.preventDefault();
