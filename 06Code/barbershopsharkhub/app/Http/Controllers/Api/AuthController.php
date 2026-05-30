@@ -10,6 +10,22 @@ use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
+    // Retorna datos del usuario autenticado desde la sesión PHP
+    public function me()
+    {
+        $userId = session('user_id');
+        if (!$userId) {
+            return response()->json(['message' => 'Not authenticated'], 401);
+        }
+        return response()->json([
+            'user_id'       => session('user_id'),
+            'user_name'     => session('user_name'),
+            'user_email'    => session('user_email'),
+            'role'          => session('role'),
+            'barbershop_id' => session('barbershop_id'),
+        ]);
+    }
+
     public function register(Request $request)
     {
         $validatedData = $request->validate([
@@ -147,6 +163,11 @@ class AuthController extends Controller
             'supabase_access_token' => $authData['access_token'] ?? null,
         ]);
 
+        session()->save(); // <--- IMPORTANTE: Forzar persistencia inmediata
+
+        // Autenticar oficialmente en Laravel para que Auth::user() funcione en Policies/Gates
+        \Illuminate\Support\Facades\Auth::login($user);
+
         $redirectUrl = '/customer/dashboard';
 
         if ($membership && $membership->role === 'owner') {
@@ -161,12 +182,13 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Inicio de sesión correcto.',
             'redirect' => $redirectUrl,
+            'access_token' => $authData['access_token'] ?? null,
             'user' => [
-                'id' => $user->id,
-                'name' => $user->full_name,
-                'email' => $user->email,
-                'role' => $membership?->role,
-                'barbershop_id' => $membership?->barbershop_id,
+                'id'           => $user->id,
+                'name'         => $user->full_name,
+                'email'        => $user->email,
+                'role'         => $membership?->role,
+                'barbershop_id'=> $membership?->barbershop_id,
             ],
         ]);
     }

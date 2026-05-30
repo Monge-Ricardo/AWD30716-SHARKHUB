@@ -11,7 +11,7 @@
     --primary-gold: #D4AF37;
     --primary-gold-dim: rgba(212, 175, 55, 0.15);
     --text-main: #F0F0F0;
-    --text-muted: #888888;
+    --text-muted: #F0F0F0;
     --border-color: #222222;
     --accent-red: #8B0000;
     --accent-green: #2e7d32;
@@ -415,4 +415,30 @@ h1, h2, h3, h4, h5, h6,
         width: 100%;
         min-width: 0;
     }
+}
+
+/* ---------- Premium UI Extensions ---------- */
+.avatar-sm { 
+    width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary-gold); 
+    object-fit: cover;
+}
+
+.badge-role { 
+    background: var(--primary-gold-dim); color: var(--primary-gold); 
+    border: 1px solid var(--primary-gold); padding: 2px 8px; border-radius: 4px; 
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; 
+}
+
+.btn-action { 
+    background: transparent; border: 1px solid rgba(255,255,255,.1); color: #fff; 
+    width: 32px; height: 32px; border-radius: 6px; display: flex; 
+    align-items: center; justify-content: center; transition: all .3s; 
+}
+
+.btn-action:hover { border-color: var(--primary-gold); color: var(--primary-gold); background: var(--primary-gold-dim); }
+.btn-action.delete:hover { border-color: var(--accent-red); color: var(--accent-red); background: rgba(139, 0, 0, 0.1); }
+
+.dashboard-action-btn { 
+    font-family: 'Oswald', sans-serif !important; letter-spacing: 1px; 
+    text-transform: uppercase; font-size: 0.8rem; padding: 8px 16px; 
 }

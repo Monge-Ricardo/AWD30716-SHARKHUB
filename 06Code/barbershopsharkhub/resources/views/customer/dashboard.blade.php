@@ -15,6 +15,11 @@
         href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Roboto:wght@300;400;500&display=swap"
         rel="stylesheet">
 
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <!-- Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
@@ -24,6 +29,9 @@
     <!-- Dashboard Styles -->
     <link href="/css/dashboard.css" rel="stylesheet">
     <link href="/css/customer-dashboard.css" rel="stylesheet">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -49,7 +57,7 @@
             <i class="fa-solid fa-user-pen"></i> Perfil
         </a>
 
-        <a href="/" class="nav-link logout-mt">
+        <a href="#" class="nav-link logout-mt" id="btnLogout">
             <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión
         </a>
     </nav>
@@ -62,9 +70,14 @@
                 <p class="text-muted mb-0">Agenda tus citas y accede a los servicios de barbería disponibles.</p>
             </div>
             <div class="user-profile">
+<<<<<<< HEAD:06Code/barbershopsharkhub/resources/views/customer/dashboard.html
                 <span class="d-none d-sm-block font-weight-bold">Cargando...</span>
                 <img src="https://ui-avatars.com/api/?name=Cliente&background=222&color=D4AF37" alt="Cliente"
                     class="avatar">
+=======
+                <span class="d-none d-sm-block font-weight-bold" id="customerName">Cargando...</span>
+                <img src="" alt="Client" class="avatar" id="customerAvatar">
+>>>>>>> OAuth-Ricardo:06Code/barbershopsharkhub/resources/views/customer/dashboard.blade.php
             </div>
         </header>
 
@@ -196,7 +209,62 @@
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/dashboard-common.js"></script>
+<<<<<<< HEAD:06Code/barbershopsharkhub/resources/views/customer/dashboard.html
     <script src="/js/customer-dashboard.js?v=6"></script>
+=======
+    <script src="/js/customer-dashboard.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            // Initialize Supabase Client
+            const supabaseUrl = '{{ env("SUPABASE_URL") }}';
+            const supabaseAnonKey = '{{ env("SUPABASE_ANON_KEY") }}';
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+            // Function to verify session
+            async function verifySession() {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                if (error || !session) { 
+                    window.location.replace('/'); 
+                    return false; 
+                }
+                return session;
+            }
+
+            const session = await verifySession();
+            if (!session) return;
+
+            // Extract user info from session metadata (or Google profile)
+            const name = session.user.user_metadata?.name || session.user.user_metadata?.full_name || 'Cliente';
+            document.getElementById('customerName').textContent = name;
+            
+            const avatarUrl = session.user.user_metadata?.avatar_url || 
+                'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=222&color=D4AF37';
+            document.getElementById('customerAvatar').src = avatarUrl;
+
+            // Handle Logout
+            document.getElementById('btnLogout').addEventListener('click', async (e) => {
+                e.preventDefault();
+                // Ocultar el contenido inmediatamente para que si usan 'Atrás', no vean la sesión anterior
+                document.body.style.display = 'none';
+                await supabase.auth.signOut();
+                window.location.href = '/';
+            });
+
+            // Handle bfcache (Botón de Atrás del navegador)
+            window.addEventListener('pageshow', async function(event) {
+                if (event.persisted) {
+                    await verifySession();
+                }
+            });
+
+        } catch(e) { 
+            console.error(e); 
+            window.location.replace('/');
+        }
+    });
+    </script>
+>>>>>>> OAuth-Ricardo:06Code/barbershopsharkhub/resources/views/customer/dashboard.blade.php
 </body>
 
 </html>

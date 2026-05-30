@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Availability extends Model
 {
+<<<<<<< HEAD
     protected $table = 'availability';
 
     protected $primaryKey = 'id';
@@ -14,6 +15,12 @@ class Availability extends Model
 
     protected $keyType = 'string';
 
+=======
+    protected $table = 'availabilities';
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+>>>>>>> OAuth-Ricardo
     public $timestamps = false;
 
     protected $fillable = [

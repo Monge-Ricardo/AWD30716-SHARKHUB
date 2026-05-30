@@ -48,6 +48,8 @@ class ServiceController extends Controller
 
     public function update(Request $request, Service $service)
     {
+        $this->authorize('update', $service);
+
         $validatedData = $request->validate([
             'barbershop_id' => 'sometimes|required|uuid',
             'name' => 'sometimes|required|string|max:255',
@@ -64,6 +66,8 @@ class ServiceController extends Controller
 
     public function destroy(Service $service)
     {
+        $this->authorize('update', $service);
+
         $service->update([
             'is_active' => false,
         ]);

@@ -41,10 +41,17 @@
             </div>
             <div class="user-profile">
                 <div class="text-end d-none d-sm-block">
+<<<<<<< HEAD:06Code/barbershopsharkhub/resources/views/barber/dashboard.html
                     <h6 class="mb-0" id="barberProfileName">Cargando...</h6>
                     <small class="text-muted" id="barberProfileRole">Barbero</small>
                 </div>
                 <img id="barberProfileAvatar" src="https://ui-avatars.com/api/?name=Barbero&background=D4AF37&color=000" alt="Barber" class="avatar">
+=======
+                    <h6 class="mb-0" id="barberName">Cargando...</h6>
+                    <small class="text-muted">Barbero</small>
+                </div>
+                <img src="" alt="Barber" class="avatar" id="barberAvatar">
+>>>>>>> OAuth-Ricardo:06Code/barbershopsharkhub/resources/views/barber/dashboard.blade.php
             </div>
         </header>
 
@@ -389,5 +396,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/dashboard-common.js"></script>
     <script src="/js/barber-dashboard.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        try {
+            const session = JSON.parse(sessionStorage.getItem('sharkhub_session') || '{}');
+            if (!session.user_id) { window.location.href = '/customer/login'; return; }
+            const name = session.user_name || 'Barbero';
+            document.getElementById('barberName').textContent = name;
+            document.getElementById('barberAvatar').src =
+                'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=D4AF37&color=000';
+        } catch(e) { console.error(e); }
+    });
+    </script>
 </body>
 </html>

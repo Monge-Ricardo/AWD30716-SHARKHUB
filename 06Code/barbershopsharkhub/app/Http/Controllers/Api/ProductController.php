@@ -49,6 +49,8 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        $this->authorize('update', $product);
+
         $validatedData = $request->validate([
             'barbershop_id' => 'sometimes|required|uuid',
             'name' => 'sometimes|required|string|max:255',
@@ -66,6 +68,8 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        $this->authorize('update', $product);
+
         $product->update([
             'is_active' => false,
         ]);

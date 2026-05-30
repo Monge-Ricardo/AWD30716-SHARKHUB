@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     protected $table = 'appointments';
+<<<<<<< HEAD
 
     protected $primaryKey = 'id';
 
@@ -14,6 +15,11 @@ class Appointment extends Model
 
     protected $keyType = 'string';
 
+=======
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+>>>>>>> OAuth-Ricardo
     public $timestamps = false;
 
     protected $fillable = [
