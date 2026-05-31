@@ -1,0 +1,83 @@
+// docs/PrismaSchema.prisma
+
+generator customer {
+  provider = "prisma-customer-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String       @id @default(uuid()) @db.Uuid
+  name                 String
+  email                String       @unique
+  role                 String       @default("customer")
+  phone                String?
+  avatar_url           String?
+  created_at           DateTime     @default(now())
+  updated_at           DateTime     @updatedAt
+
+  customer_appointments  Appointment[] @relation("customerAppointments")
+  barber_appointments  Appointment[] @relation("BarberAppointments")
+}
+
+model Barbershop {
+  id                   String       @id @default(uuid()) @db.Uuid
+  name                 String
+  created_at           DateTime     @default(now())
+  updated_at           DateTime     @updatedAt
+
+  services             Service[]
+  appointments         Appointment[]
+}
+
+model Service {
+  id                   String       @id @default(uuid()) @db.Uuid
+  barbershop_id        String       @db.Uuid
+  name                 String
+  description          String?
+  price                Decimal      @db.Decimal(8, 2)
+  duration_minutes     Int
+  is_active            Boolean      @default(true)
+  created_at           DateTime     @default(now())
+  updated_at           DateTime     @updatedAt
+
+  barbershop           Barbershop   @relation(fields: [barbershop_id], references: [id])
+  appointment_services AppointmentService[]
+
+  @@map("services")
+}
+
+model Appointment {
+  id                   String       @id @default(uuid()) @db.Uuid
+  barbershop_id        String       @db.Uuid
+  customer_id            String       @db.Uuid
+  barber_id            String       @db.Uuid
+  appointment_date     DateTime     @db.Date
+  start_time           DateTime     @db.Time
+  end_time             DateTime     @db.Time
+  status               String       @default("PENDING")
+  notes                String?
+  created_at           DateTime     @default(now())
+  updated_at           DateTime     @updatedAt
+
+  barbershop           Barbershop   @relation(fields: [barbershop_id], references: [id])
+  customer               User         @relation("customerAppointments", fields: [customer_id], references: [id])
+  barber               User         @relation("BarberAppointments", fields: [barber_id], references: [id])
+  appointment_services AppointmentService[]
+
+  @@map("appointments")
+}
+
+model AppointmentService {
+  id                   String       @id @default(uuid()) @db.Uuid
+  appointment_id       String       @db.Uuid
+  service_id           String       @db.Uuid
+
+  appointment          Appointment  @relation(fields: [appointment_id], references: [id])
+  service              Service      @relation(fields: [service_id], references: [id])
+
+  @@map("appointment_services")
+}
