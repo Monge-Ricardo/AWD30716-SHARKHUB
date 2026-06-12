@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\CustomerAppointmentController;
 use App\Http\Controllers\Api\OwnerController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ServiceController;
-<<<<<<< HEAD
+
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Session\Middleware\StartSession;
@@ -56,7 +56,7 @@ Route::middleware($sessionMiddleware)->group(function () {
         Route::patch('/appointments/{appointment}/cancel', [CustomerAppointmentController::class, 'cancel']);
     });
 });
-=======
+
 use App\Http\Controllers\Api\BarbershopController;
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AvailabilityController;
