@@ -1,0 +1,160 @@
+############## Owner
+{
+    "message": "Sesión iniciada correctamente",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwYTRkZmEwOS1jOTNhLTRjOTAtYTRhZi1lNzc1NDYyMzY3YWEiLCJyb2xlIjoiY2xpZW50IiwiZXhwIjoxNzgxODMxNTg3fQ.yH4QBXPnokOiNtcI1jDRkoPMuqFDSCtbzcXPIPVfQ9c",
+    "user": {
+        "id": "0a4dfa09-c93a-4c90-a4af-e775462367aa",
+        "name": "Owner SharkHub",
+        "email": "owner@example.com"
+    }
+}
+
+{
+    "id": "95214e64-98d5-4e39-82d4-487b8673ca90",
+    "name": "SharkHub Barbería",
+    "slug": "sharkhub-barberia",
+    "description": "Barbería principal de pruebas",
+    "logo_url": "logo.png",
+    "address": "Sangolquí",
+    "phone": "0987654321",
+    "email": "barberia@example.com",
+    "invite_code": "SH-4QL-15P",
+    "is_active": true,
+    "created_at": "2026-06-12T01:18:54.207000Z",
+    "updated_at": "2026-06-12T01:18:54.207000Z"
+}
+
+
+############# Barber
+{
+    "message": "Usuario registrado exitosamente",
+    "user": {
+        "id": "9d814758-fc3e-4da7-93c1-e6c5768c58c8",
+        "name": "Carlos Barber",
+        "email": "barber1@example.com"
+    }
+}
+
+{
+    "message": "Sesión iniciada correctamente",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZDgxNDc1OC1mYzNlLTRkYTctOTNjMS1lNmM1NzY4YzU4YzgiLCJyb2xlIjoiYmFyYmVyIiwiZXhwIjoxNzgxODQxOTc2fQ.9Pq04manAzZkfsQyRrLE78TT2CuPvq8cPPvNkgh11V8",
+    "user": {
+        "id": "9d814758-fc3e-4da7-93c1-e6c5768c58c8",
+        "name": "Carlos Barber",
+        "email": "barber1@example.com"
+    }
+}
+
+################## BarberShop MEMBERS
+[
+    {
+        "member_id": "45594745-5dee-4e20-8e7d-8cc193c6ea07",
+        "user_id": "0a4dfa09-c93a-4c90-a4af-e775462367aa",
+        "name": "Owner SharkHub",
+        "role": "owner",
+        "status": "active",
+        "joined_at": "2026-06-12T01:18:54.442000Z"
+    },
+    {
+        "member_id": "7929e68b-3b5d-438b-90ce-f52186f7df2b",
+        "user_id": "9d814758-fc3e-4da7-93c1-e6c5768c58c8",
+        "name": "Carlos Barber",
+        "role": "barber",
+        "status": "active",
+        "joined_at": "2026-06-12T01:33:50.653000Z"
+    }
+]
+
+############# CUSTOMER
+{
+    "message": "Sesión iniciada correctamente",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZTc2ODA5Mi1lMzRlLTQ3ZTktOWExYS02MGJkNGMyMDc3OTQiLCJyb2xlIjoiY2xpZW50IiwiZXhwIjoxNzgxODM2ODk5fQ.iXFdHbNXDiru9UJ1WSkfDlZ1_2sUxxWBzTcRDwpnIpo",
+    "user": {
+        "id": "2e768092-e34e-47e9-9a1a-60bd4c207794",
+        "name": "Test Customer",
+        "email": "customer1@example.com"
+    }
+}
+
+{
+    "message": "Sesión iniciada correctamente",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZTc2ODA5Mi1lMzRlLTQ3ZTktOWExYS02MGJkNGMyMDc3OTQiLCJyb2xlIjoiY2xpZW50IiwiZXhwIjoxNzgxODQ0OTU4fQ.n22UMtf9VJ9IgzZNmtnGNnNrHvbic1AnhcYmwYEbKpo",
+    "user": {
+        "id": "2e768092-e34e-47e9-9a1a-60bd4c207794",
+        "name": "Test Customer",
+        "email": "customer1@example.com"
+    }
+}
+
+############### SERVICE
+{
+    "service_id": "5be23cc1-3fea-4f38-856c-d21d7bba607b",
+    "name": "Corte Normal",
+    "price": 5.0,
+    "is_active": true,
+    "description": "Para cabellos normales",
+    "duration_minutes": 10,
+    "barbershop_id": "95214e64-98d5-4e39-82d4-487b8673ca90"
+}
+
+############## AVALIBILITY
+[
+    {
+        "availability_id": "c11da953-3d40-463e-95c0-f9abf379f053",
+        "day_of_week": 1,
+        "start_time": "07:00:00",
+        "end_time": "19:00:00",
+        "is_available": true
+    },
+    {
+        "availability_id": "caf45ea1-abf6-4e30-bf6d-33c2c2072438",
+        "day_of_week": 2,
+        "start_time": "07:00:00",
+        "end_time": "19:00:00",
+        "is_available": true
+    },
+    {
+        "availability_id": "abc5ceb5-1a39-4412-8ad0-bde24c8731f4",
+        "day_of_week": 3,
+        "start_time": "07:00:00",
+        "end_time": "19:00:00",
+        "is_available": true
+    },
+    {
+        "availability_id": "c84c8439-281c-49d3-acfe-da9df15a56f7",
+        "day_of_week": 4,
+        "start_time": "07:00:00",
+        "end_time": "19:00:00",
+        "is_available": true
+    },
+    {
+        "availability_id": "87cb355d-9e9f-4f97-aaa5-37e9f73ca700",
+        "day_of_week": 5,
+        "start_time": "07:00:00",
+        "end_time": "19:00:00",
+        "is_available": true
+    }
+]
+
+################# APPOINTMENT
+{
+    "appointment_id": "afd7e13f-829b-4c3c-b061-470a908eb3f9",
+    "barber_id": "9d814758-fc3e-4da7-93c1-e6c5768c58c8",
+    "client_id": "2e768092-e34e-47e9-9a1a-60bd4c207794",
+    "appointment_date": "2026-06-16",
+    "status": "pending",
+    "notes": "",
+    "start_time": "12:06:00",
+    "end_time": "12:36:00",
+    "barbershop_id": "95214e64-98d5-4e39-82d4-487b8673ca90"
+}
+
+############ INVITATIONS
+[
+    {
+        "invitation_id": "5684c9eb-b5c0-4f4f-9ce8-4fa60bfadbba",
+        "code": "SH-144-TJZ",
+        "expires_at": "2026-06-20T05:17:40.737000Z",
+        "is_active": true
+    }
+]
