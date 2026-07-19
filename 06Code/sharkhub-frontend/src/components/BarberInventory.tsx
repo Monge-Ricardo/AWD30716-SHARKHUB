@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
+import { createPortal } from "react-dom";
 import { request, cachedRequest } from "../api/api";
 
 interface Product {
-  id: string | number;
+  id?: string | number;
+  product_id?: string | number;
   name: string;
   description?: string;
   price: number | string;
@@ -18,6 +20,7 @@ export default function BarberInventory() {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const [editingId, setEditingId] = useState<string | number | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<string>("");
@@ -34,9 +37,10 @@ export default function BarberInventory() {
       setProducts(Array.isArray(data) ? data : []);
     } catch (err: any) {
       console.error(err);
-      setError("No se pudieron cargar los productos del inventario.");
+      setError("No se pudieron cargar los productos.");
     } finally {
       setLoading(false);
+      setSelectedProduct(null);
     }
   };
 
@@ -55,7 +59,8 @@ export default function BarberInventory() {
   };
 
   const openEditModal = (product: Product) => {
-    setEditingId(product.id);
+    const pId = product.product_id || product.id || null;
+    setEditingId(pId);
     setName(product.name || "");
     setDescription(product.description || "");
     setPrice(String(product.price) || "");
@@ -68,6 +73,7 @@ export default function BarberInventory() {
     e.preventDefault();
     try {
       const payload = {
+        barbershop_id: barbershopId,
         name,
         description,
         price: parseFloat(price),
@@ -104,15 +110,51 @@ export default function BarberInventory() {
     <div>
       <div className="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
         <div>
-          <h2 style={{ fontFamily: "'Oswald', sans-serif", letterSpacing: "1px" }}>Mis Productos</h2>
-          <p className="text-muted mb-0">Gestiona el inventario de ceras, geles y accesorios disponibles para la venta.</p>
+          <h2 style={{ fontFamily: "'Oswald', sans-serif", letterSpacing: "1px" }}>Catálogo de Productos</h2>
+          <p className="text-muted mb-0">Administra los productos de tu barbería disponibles para el personal y clientes.</p>
         </div>
         <button onClick={openAddModal} className="btn btn-gold py-2 px-4 fw-bold">
           <i className="fa-solid fa-plus me-2"></i>Nuevo Producto
         </button>
       </div>
 
-      <div className="p-4" style={{ backgroundColor: "#161615", borderRadius: "8px", border: "1px solid #333" }}>
+      {/* Compliant Action Toolbar - No Inline Actions */}
+      <div className="panel-card mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3" style={{ border: '1px solid var(--border-color)', backgroundColor: '#1c1c1a' }}>
+        <div className="d-flex align-items-center gap-2">
+          <i className="fa-solid fa-circle-info text-gold fs-5"></i>
+          {selectedProduct ? (
+            <div className="text-start">
+              <span className="text-white fw-bold">Seleccionado:</span> <span className="text-gold fw-bold">{selectedProduct.name}</span>
+              <span className="text-muted ms-2">(${parseFloat(String(selectedProduct.price)).toFixed(2)} - {selectedProduct.stock} uds)</span>
+            </div>
+          ) : (
+            <span className="text-muted italic">Selecciona una fila de la tabla para gestionarla.</span>
+          )}
+        </div>
+        <div className="d-flex gap-2">
+          <button 
+            type="button"
+            onClick={() => selectedProduct && openEditModal(selectedProduct)} 
+            className="btn btn-outline-gold px-3 py-2 fw-bold"
+            disabled={!selectedProduct}
+          >
+            <i className="fa-solid fa-pen-to-square me-1"></i> Editar
+          </button>
+          <button 
+            type="button"
+            onClick={() => {
+              const pId = selectedProduct?.product_id || selectedProduct?.id;
+              if (pId) handleDelete(pId);
+            }} 
+            className="btn btn-outline-danger px-3 py-2 fw-bold"
+            disabled={!selectedProduct}
+          >
+            <i className="fa-solid fa-trash me-1"></i> Eliminar
+          </button>
+        </div>
+      </div>
+
+      <div className="panel-card mt-3">
         {error && <div className="alert alert-danger" style={{ backgroundColor: "#2c0e0e", borderColor: "#7a1a1a", color: "#ff8888" }}>{error}</div>}
 
         {loading ? (
@@ -129,57 +171,55 @@ export default function BarberInventory() {
           </div>
         ) : (
           <div className="table-responsive">
-            <table className="table table-dark table-hover mb-0" style={{ borderColor: "#333" }}>
+            <table className="table table-dashboard table-hover mb-0">
               <thead>
-                <tr style={{ color: "#D4AF37" }}>
+                <tr>
                   <th>Imagen</th>
                   <th>Producto</th>
                   <th>Descripción</th>
                   <th>Stock</th>
                   <th>Precio</th>
-                  <th className="text-end">Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                {products.map((product) => (
-                  <tr key={product.id} className="align-middle">
-                    <td>
-                      <img
-                        src={product.image_url || "https://images.unsplash.com/photo-1593121925328-7b3001606ec8?q=80&w=100&auto=format&fit=crop"}
-                        alt={product.name}
-                        className="rounded"
-                        style={{ width: "50px", height: "50px", objectFit: "cover", border: "1px solid #333" }}
-                      />
-                    </td>
-                    <td className="fw-bold" style={{ color: "#fff" }}>{product.name}</td>
-                    <td className="text-muted" style={{ maxWidth: "250px", overflow: "hidden", textOverflow: "ellipsis" }}>
-                      {product.description || "Sin descripción"}
-                    </td>
-                    <td>
-                      <span className={`badge px-2 py-1 ${product.stock <= 5 ? "bg-danger" : "bg-secondary"}`}>
-                        {product.stock} unidades
-                      </span>
-                    </td>
-                    <td className="fw-bold" style={{ color: "#D4AF37" }}>${parseFloat(String(product.price)).toFixed(2)}</td>
-                    <td className="text-end">
-                      <div className="d-flex justify-content-end gap-2">
-                        <button onClick={() => openEditModal(product)} className="btn btn-sm btn-outline-light px-3">
-                          <i className="fa-solid fa-pen-to-square"></i> Editar
-                        </button>
-                        <button onClick={() => handleDelete(product.id)} className="btn btn-sm btn-danger px-3">
-                          <i className="fa-solid fa-trash"></i> Eliminar
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                {products.map((product) => {
+                  const pId = product.product_id || product.id;
+                  const isSelected = selectedProduct?.product_id === pId || selectedProduct?.id === pId;
+                  return (
+                    <tr 
+                      key={pId} 
+                      className={`align-middle cursor-pointer ${isSelected ? 'table-activeselected' : ''}`}
+                      onClick={() => setSelectedProduct(product)}
+                      style={{ transition: 'background-color 0.2s' }}
+                    >
+                      <td>
+                        <img
+                          src={product.image_url || "https://images.unsplash.com/photo-1593121925328-7b3001606ec8?q=80&w=100&auto=format&fit=crop"}
+                          alt={product.name}
+                          className="rounded"
+                          style={{ width: "50px", height: "50px", objectFit: "cover", border: "1px solid #333" }}
+                        />
+                      </td>
+                      <td className="fw-bold text-white">{product.name}</td>
+                      <td className="text-muted" style={{ maxWidth: "250px", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {product.description || "Sin descripción"}
+                      </td>
+                      <td>
+                        <span className={`badge px-2 py-1 ${product.stock <= 5 ? "bg-danger" : "bg-secondary"}`}>
+                          {product.stock} unidades
+                        </span>
+                      </td>
+                      <td className="fw-bold" style={{ color: "#D4AF37" }}>${parseFloat(String(product.price)).toFixed(2)}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         )}
       </div>
 
-      {showModal && (
+      {showModal && createPortal(
         <div className="modal show d-block" tabIndex={-1} style={{ backgroundColor: "#000000aa" }}>
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content text-white" style={{ backgroundColor: "#161615", border: "1px solid #D4AF37" }}>
@@ -256,7 +296,8 @@ export default function BarberInventory() {
               </form>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
