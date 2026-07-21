@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { request } from "../api/api";
 
 interface Appointment {
@@ -28,6 +28,20 @@ export default function BarberAgenda() {
   };
 
   const [filterDate, setFilterDate] = useState<string>(getTodayDateString());
+
+  const touchTimerRef = useRef<any>(null);
+
+  const handleTouchStart = (appointment: Appointment) => {
+    touchTimerRef.current = setTimeout(() => {
+      setSelectedAppointment(appointment);
+    }, 700);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchTimerRef.current) {
+      clearTimeout(touchTimerRef.current);
+    }
+  };
 
   const fetchAppointments = async () => {
     try {
@@ -134,7 +148,6 @@ export default function BarberAgenda() {
           </div>
         ) : (
           <div>
-            {/* Compliant Action Toolbar - No Inline Actions */}
             <div className="panel-card mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3" style={{ border: '1px solid var(--border-color)', backgroundColor: '#1c1c1a' }}>
               <div className="d-flex align-items-center gap-2">
                 <i className="fa-solid fa-circle-info text-gold fs-5"></i>
@@ -193,6 +206,7 @@ export default function BarberAgenda() {
                       <th>Cliente</th>
                       <th>Notas / Comentarios</th>
                       <th>Estado</th>
+                      <th className="text-end d-none d-md-table-cell" style={{ width: '60px' }}>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -203,6 +217,9 @@ export default function BarberAgenda() {
                           key={appointment.appointment_id} 
                           className={`align-middle cursor-pointer ${isSelected ? 'table-activeselected' : ''}`}
                           onClick={() => setSelectedAppointment(appointment)}
+                          onTouchStart={() => handleTouchStart(appointment)}
+                          onTouchEnd={handleTouchEnd}
+                          onTouchCancel={handleTouchEnd}
                           style={{ transition: 'background-color 0.2s' }}
                         >
                           <td className="fw-bold text-white">
@@ -227,6 +244,16 @@ export default function BarberAgenda() {
                             }}>
                               {appointment.status === "accepted" ? "confirmada" : appointment.status}
                             </span>
+                          </td>
+                          <td className="text-end d-none d-md-table-cell">
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-link text-gold p-0"
+                              onClick={(e) => { e.stopPropagation(); setSelectedAppointment(appointment); }}
+                              title="Acciones (PC)"
+                            >
+                              <i className="fa-solid fa-bars fs-5"></i>
+                            </button>
                           </td>
                         </tr>
                       );
