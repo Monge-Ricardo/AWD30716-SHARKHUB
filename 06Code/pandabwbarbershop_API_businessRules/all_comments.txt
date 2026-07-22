@@ -59,13 +59,13 @@
 .\app\controllers\barbershop_controller.py:135:# Verify user profile exists
 .\app\controllers\dashboard_controller.py:21:# Helper to verify ownership of a shop
 .\app\controllers\dashboard_controller.py:34:# Helper to verify barber belongs to a shop
-.\app\controllers\dashboard_controller.py:46:# 👑 A. OWNER ENDPOINTS
+.\app\controllers\dashboard_controller.py:46:#  A. OWNER ENDPOINTS
 .\app\controllers\dashboard_controller.py:116:# 1. Lookup user in public profiles
 .\app\controllers\dashboard_controller.py:125:# 2. Add as barber member
 .\app\controllers\dashboard_controller.py:146:# Verify member exists and belongs to this shop
 .\app\controllers\dashboard_controller.py:181:# Verify appointment belongs to owner's shop
-.\app\controllers\dashboard_controller.py:189:# 💈 B. BARBER ENDPOINTS
-.\app\controllers\dashboard_controller.py:232:# 👥 C. CUSTOMER ENDPOINTS
+.\app\controllers\dashboard_controller.py:189:#  B. BARBER ENDPOINTS
+.\app\controllers\dashboard_controller.py:232:#  C. CUSTOMER ENDPOINTS
 .\app\controllers\dashboard_controller.py:279:# YYYY-MM-DD
 .\app\controllers\dashboard_controller.py:285:# 1. Verify service
 .\app\controllers\dashboard_controller.py:292:# 2. Get date day of week

@@ -41,7 +41,7 @@ async def get_barber_barbershop_id(barber_id: str) -> str:
     )
 
 # ========================================================
-# 👑 A. OWNER ENDPOINTS
+#  A. OWNER ENDPOINTS
 # ========================================================
 
 @router.get("/owner/barbershops", dependencies=[Depends(require_role(["owner"]))])
@@ -180,7 +180,7 @@ async def owner_patch_appointment_status(appointment_id: str, body: dict, curren
     return await crud_client.update_appointment(appointment_id, {"status": new_status})
 
 # ========================================================
-# 💈 B. BARBER ENDPOINTS
+#  B. BARBER ENDPOINTS
 # ========================================================
 
 @router.get("/barber/appointments", dependencies=[Depends(require_role(["barber"]))])
@@ -223,7 +223,7 @@ async def barber_create_product(body: dict, current_user: dict = Depends(get_cur
     )
 
 # ========================================================
-# 👥 C. CUSTOMER ENDPOINTS
+#  C. CUSTOMER ENDPOINTS
 # ========================================================
 
 @router.get("/customer/barbers")
