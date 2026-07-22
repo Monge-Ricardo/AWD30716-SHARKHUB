@@ -94,7 +94,6 @@ async def update_invitation_status(shop_id: str, invitation_id: str, current_use
             detail="Código de invitación no encontrado."
         )
 
-    # Toggle active status or just set active to false
     updated = await crud_client.update_invitation_code(invitation_id, {"is_active": not code["is_active"]})
     return {
         "invitation_id": updated["id"],
@@ -126,7 +125,6 @@ async def claim_invitation(body: InvitationClaim, current_user: dict = Depends(g
     Canjea un código de invitación para convertirse en barbero.
     Asocia el usuario autenticado a la barbería del código con el rol 'barber'.
     """
-    # 1. Look up the code in persistence API
     codes = await crud_client.list_invitation_codes(code=body.code)
     if not codes:
         raise HTTPException(
@@ -136,14 +134,12 @@ async def claim_invitation(body: InvitationClaim, current_user: dict = Depends(g
     
     invitation = codes[0]
     
-    # 2. Check if code is active
     if not invitation.get("is_active"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="El código de invitación ya no está activo o ya fue utilizado."
         )
         
-    # 3. Check expiration date (expires_at)
     if invitation.get("expires_at"):
         try:
             exp_date = datetime.fromisoformat(invitation["expires_at"].replace("Z", "+00:00"))
@@ -157,7 +153,6 @@ async def claim_invitation(body: InvitationClaim, current_user: dict = Depends(g
         except Exception:
             pass 
 
-    # 4. Create membership as a barber in this barbershop
     shop_id = invitation["barbershop_id"]
     
     existing_memberships = await crud_client.list_members(barbershop_id=shop_id, user_id=current_user["id"])
@@ -172,7 +167,6 @@ async def claim_invitation(body: InvitationClaim, current_user: dict = Depends(g
             status="active"
         )
         
-    # 5. Deactivate the invitation code (one-time use)
     await crud_client.update_invitation_code(invitation["id"], {"is_active": False})
     
     return {

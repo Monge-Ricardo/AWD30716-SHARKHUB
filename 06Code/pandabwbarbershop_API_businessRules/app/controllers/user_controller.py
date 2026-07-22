@@ -39,7 +39,6 @@ async def create_user_admin(body: UserCreate, current_user: dict = Depends(get_c
     """
     Crea manualmente un usuario y su cuenta de autenticación (Reservado para administradores/dueños).
     """
-    # Verify if email is already in use
     existing = await crud_client.list_users(email=body.email)
     if existing:
         raise HTTPException(
@@ -51,10 +50,8 @@ async def create_user_admin(body: UserCreate, current_user: dict = Depends(get_c
     default_hashed_pass = hash_password("SecurePassword123!") # Default password
 
     try:
-        # Create auth record
         await crud_client.create_auth_user(id=user_uuid, email=body.email, encrypted_password=default_hashed_pass)
         
-        # Create public profile
         profile = await crud_client.create_user(
             id=user_uuid,
             full_name=body.full_name,

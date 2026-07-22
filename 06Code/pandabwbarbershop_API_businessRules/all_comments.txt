@@ -1,0 +1,113 @@
+.\docker-compose.yml:6:# Exponer internamente para Caddy, no en el host
+.\README.md:1:# pandabwbarbershop_API_businessRules
+.\app\main.py:22:# Enable CORS for decentralized frontend consumption
+.\app\main.py:31:# Register routers (preserving the paths/prefixes as needed)
+.\app\main.py:32:# All business endpoints are served directly on the root or configured prefixes
+.\app\clients\crud_client.py:21:# We raise a custom exception containing the actual error message
+.\app\clients\crud_client.py:29:# --- AUTH USERS ---
+.\app\clients\crud_client.py:46:# --- PUBLIC USERS ---
+.\app\clients\crud_client.py:64:# --- BARBERSHOPS ---
+.\app\clients\crud_client.py:89:# --- BARBERSHOP MEMBERS ---
+.\app\clients\crud_client.py:111:# --- SERVICES ---
+.\app\clients\crud_client.py:129:# --- PRODUCTS ---
+.\app\clients\crud_client.py:147:# --- APPOINTMENTS ---
+.\app\clients\crud_client.py:181:# --- APPOINTMENT SERVICES ---
+.\app\clients\crud_client.py:203:# --- AVAILABILITY ---
+.\app\clients\crud_client.py:232:# --- INVITATION CODES ---
+.\app\controllers\appointment_controller.py:19:# Handle formats like "10:00:00", "10:00:00.000Z", "10:00"
+.\app\controllers\appointment_controller.py:21:# t_clean is now "HH:MM:SS" or "HH:MM"
+.\app\controllers\appointment_controller.py:53:# Monday=1, ..., Sunday=7
+.\app\controllers\appointment_controller.py:89:# Overlap condition: start1 < end2 AND start2 < end1
+.\app\controllers\appointment_controller.py:124:# --- APPOINTMENTS ENDPOINTS ---
+.\app\controllers\appointment_controller.py:137:# Owners can list all. Customers and barbers can only list their own unless filtered.
+.\app\controllers\appointment_controller.py:172:# Enforce that client_id matches the logged-in user unless the caller is an owner/barber
+.\app\controllers\appointment_controller.py:180:# Validate business rules
+.\app\controllers\appointment_controller.py:189:# Create the appointment
+.\app\controllers\appointment_controller.py:200:# Bind service if provided
+.\app\controllers\appointment_controller.py:208:# Cleanup appointment on failure to link service
+.\app\controllers\appointment_controller.py:239:# Enforce reading permissions
+.\app\controllers\appointment_controller.py:283:# Check if rescheduling requires validating rules
+.\app\controllers\appointment_controller.py:310:# Barber or Owner can accept/cancel/complete appointment (HU25)
+.\app\controllers\appointment_controller.py:367:# --- APPOINTMENT SERVICES ENDPOINTS ---
+.\app\controllers\appointment_controller.py:396:# Verify appointment exists
+.\app\controllers\appointment_controller.py:404:# Verify service exists
+.\app\controllers\auth_controller.py:17:# Check if user already exists
+.\app\controllers\auth_controller.py:29:# 1. Create entry in auth schema
+.\app\controllers\auth_controller.py:32:# 2. Create profile in public schema
+.\app\controllers\auth_controller.py:44:# Try cleaning up in case of failure
+.\app\controllers\auth_controller.py:66:# Resolve details
+.\app\controllers\auth_controller.py:70:# Generate token
+.\app\controllers\auth_controller.py:83:# Sessions mappings matching URIS.md
+.\app\controllers\auth_controller.py:92:# Managed client side or default 7 days expiration
+.\app\controllers\auth_controller.py:111:# For a JWT implementation, invalidation happens on the client side (discarding the token).
+.\app\controllers\auth_controller.py:147:# Check if user already exists in our database
+.\app\controllers\auth_controller.py:151:# User exists, retrieve their profile data
+.\app\controllers\auth_controller.py:155:# User does not exist, automatically register with default role 'customer'
+.\app\controllers\auth_controller.py:157:# Safe random password for auth database
+.\app\controllers\auth_controller.py:162:# 1. Create credentials in auth schema
+.\app\controllers\auth_controller.py:165:# 2. Create profile in public schema
+.\app\controllers\auth_controller.py:168:# Try cleaning up on failure
+.\app\controllers\auth_controller.py:178:# Resolve role (defaults to customer if no barbershop memberships exist)
+.\app\controllers\auth_controller.py:181:# Generate our local system token
+.\app\controllers\barbershop_controller.py:21:# --- BARBERSHOP ENDPOINTS ---
+.\app\controllers\barbershop_controller.py:36:# Create the barbershop
+.\app\controllers\barbershop_controller.py:47:# Auto-assign owner membership
+.\app\controllers\barbershop_controller.py:56:# Rollback creation if membership setup fails
+.\app\controllers\barbershop_controller.py:84:# Validate owner status
+.\app\controllers\barbershop_controller.py:104:# --- BARBERSHOP MEMBERS ENDPOINTS ---
+.\app\controllers\barbershop_controller.py:113:# Resolve names for response schema
+.\app\controllers\barbershop_controller.py:135:# Verify user profile exists
+.\app\controllers\dashboard_controller.py:21:# Helper to verify ownership of a shop
+.\app\controllers\dashboard_controller.py:34:# Helper to verify barber belongs to a shop
+.\app\controllers\dashboard_controller.py:46:# 👑 A. OWNER ENDPOINTS
+.\app\controllers\dashboard_controller.py:116:# 1. Lookup user in public profiles
+.\app\controllers\dashboard_controller.py:125:# 2. Add as barber member
+.\app\controllers\dashboard_controller.py:146:# Verify member exists and belongs to this shop
+.\app\controllers\dashboard_controller.py:181:# Verify appointment belongs to owner's shop
+.\app\controllers\dashboard_controller.py:189:# 💈 B. BARBER ENDPOINTS
+.\app\controllers\dashboard_controller.py:232:# 👥 C. CUSTOMER ENDPOINTS
+.\app\controllers\dashboard_controller.py:279:# YYYY-MM-DD
+.\app\controllers\dashboard_controller.py:285:# 1. Verify service
+.\app\controllers\dashboard_controller.py:292:# 2. Get date day of week
+.\app\controllers\dashboard_controller.py:299:# 3. Find availability block
+.\app\controllers\dashboard_controller.py:313:# 4. Fetch existing appointments
+.\app\controllers\dashboard_controller.py:317:# 5. Generate slots at APPOINTMENT_SLOT_INTERVAL_MINUTES intervals
+.\app\controllers\dashboard_controller.py:321:# Get current time in Ecuador (UTC-5)
+.\app\controllers\dashboard_controller.py:330:# Check overlaps
+.\app\controllers\dashboard_controller.py:336:# overlap check
+.\app\controllers\dashboard_controller.py:390:# YYYY-MM-DD
+.\app\controllers\dashboard_controller.py:391:# HH:MM
+.\app\controllers\dashboard_controller.py:396:# Get service duration
+.\app\controllers\dashboard_controller.py:403:# Parse inputs (SRP: Parsing responsibility)
+.\app\controllers\dashboard_controller.py:410:# 1. Validate availability and overlaps (HU21 / HU28)
+.\app\controllers\dashboard_controller.py:411:# We call our validation function directly
+.\app\controllers\dashboard_controller.py:421:# 2. Create appointment
+.\app\controllers\dashboard_controller.py:432:# 3. Link service (SRP: Database transaction / rollback responsibility)
+.\app\controllers\dashboard_controller.py:451:# 1. Obtener todos los miembros
+.\app\controllers\dashboard_controller.py:461:# Check if already exists for this barber and day
+.\app\controllers\invitation_controller.py:97:# Toggle active status or just set active to false
+.\app\controllers\invitation_controller.py:129:# 1. Look up the code in persistence API
+.\app\controllers\invitation_controller.py:139:# 2. Check if code is active
+.\app\controllers\invitation_controller.py:146:# 3. Check expiration date (expires_at)
+.\app\controllers\invitation_controller.py:160:# 4. Create membership as a barber in this barbershop
+.\app\controllers\invitation_controller.py:175:# 5. Deactivate the invitation code (one-time use)
+.\app\controllers\product_controller.py:15:# Verify if shop exists
+.\app\controllers\product_controller.py:57:# Enforce membership check
+.\app\controllers\product_controller.py:108:# Enforce membership check
+.\app\controllers\product_controller.py:149:# Enforce membership check
+.\app\controllers\service_controller.py:45:# Verify if shop exists
+.\app\controllers\service_controller.py:79:# Verify if shop exists
+.\app\controllers\service_controller.py:87:# Enforce HU27 / HU12
+.\app\controllers\service_controller.py:135:# Enforce membership check
+.\app\controllers\service_controller.py:174:# Enforce membership check
+.\app\controllers\user_controller.py:42:# Verify if email is already in use
+.\app\controllers\user_controller.py:51:# Default password
+.\app\controllers\user_controller.py:54:# Create auth record
+.\app\controllers\user_controller.py:57:# Create public profile
+.\app\controllers\__init__.py:1:# Controllers package for Business Rules API
+.\app\middleware\auth.py:46:# Check if there is an owner membership
+.\app\middleware\auth.py:50:# Check if there is a barber membership
+.\app\middleware\auth.py:68:# Check for legacy mock token (compatibility mode)
+.\app\models\__init__.py:1:# Models package for Business Rules API
+.\app\models\schemas\appointment_schema.py:13:# Option to bind service immediately
+.\app\models\schemas\__init__.py:1:# Schemas package for Business Rules API

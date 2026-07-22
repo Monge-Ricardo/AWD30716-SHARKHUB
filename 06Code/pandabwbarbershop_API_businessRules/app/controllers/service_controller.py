@@ -42,7 +42,6 @@ async def list_shop_services(shop_id: str, current_user: dict = Depends(get_curr
     """
     Obtiene todos los servicios ofrecidos por una barbería específica.
     """
-    # Verify if shop exists
     shop = await crud_client.get_barbershop(shop_id)
     if not shop:
         raise HTTPException(
@@ -76,7 +75,6 @@ async def create_service(shop_id: str, body: ServiceCreate, current_user: dict =
             detail="El ID de la barbería en la ruta no coincide con el del cuerpo."
         )
 
-    # Verify if shop exists
     shop = await crud_client.get_barbershop(shop_id)
     if not shop:
         raise HTTPException(
@@ -84,7 +82,6 @@ async def create_service(shop_id: str, body: ServiceCreate, current_user: dict =
             detail="Barbería no encontrada."
         )
 
-    # Enforce HU27 / HU12
     await check_is_barbershop_member(current_user["id"], shop_id)
 
     new_service = await crud_client.create_service(
@@ -132,7 +129,6 @@ async def update_service_details(shop_id: str, service_id: str, body: ServiceUpd
     Actualiza la información de un servicio.
     Solo miembros (Barberos o Dueños) autorizados pueden editarlo (HU13).
     """
-    # Enforce membership check
     await check_is_barbershop_member(current_user["id"], shop_id)
 
     service = await crud_client.get_service(service_id)
@@ -171,7 +167,6 @@ async def delete_service_details(shop_id: str, service_id: str, current_user: di
     Elimina un servicio de la barbería.
     Solo miembros (Barberos o Dueños) autorizados pueden eliminarlo (HU14).
     """
-    # Enforce membership check
     await check_is_barbershop_member(current_user["id"], shop_id)
 
     service = await crud_client.get_service(service_id)

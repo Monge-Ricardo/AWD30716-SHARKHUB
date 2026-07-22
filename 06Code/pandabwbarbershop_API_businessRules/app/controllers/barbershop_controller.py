@@ -33,7 +33,6 @@ async def create_barbershop(body: BarbershopCreate, current_user: dict = Depends
     Registra una nueva barbería. 
     Establece automáticamente al creador como el Propietario (Owner).
     """
-    # Create the barbershop
     new_shop = await crud_client.create_barbershop(
         name=body.name,
         slug=body.slug,
@@ -44,7 +43,6 @@ async def create_barbershop(body: BarbershopCreate, current_user: dict = Depends
         email=body.email
     )
     
-    # Auto-assign owner membership
     try:
         await crud_client.create_member(
             barbershop_id=new_shop["id"],
@@ -53,7 +51,6 @@ async def create_barbershop(body: BarbershopCreate, current_user: dict = Depends
             status="active"
         )
     except Exception as e:
-        # Rollback creation if membership setup fails
         await crud_client.delete_barbershop(new_shop["id"])
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -81,7 +78,6 @@ async def update_barbershop_details(shop_id: str, body: BarbershopUpdate, curren
     Permite editar la información de la barbería. 
     Restringido al Propietario de la misma (HU26).
     """
-    # Validate owner status
     await check_is_barbershop_owner(current_user["id"], shop_id)
     
     update_data = body.model_dump(exclude_unset=True)
@@ -110,7 +106,6 @@ async def list_barbershop_members(shop_id: str, current_user: dict = Depends(get
     """
     members = await crud_client.list_members(barbershop_id=shop_id)
     
-    # Resolve names for response schema
     resolved_members = []
     for m in members:
         user_profile = await crud_client.get_user(m["user_id"])
@@ -132,7 +127,6 @@ async def add_barbershop_member(shop_id: str, body: MemberCreate, current_user: 
     """
     await check_is_barbershop_owner(current_user["id"], shop_id)
     
-    # Verify user profile exists
     user = await crud_client.get_user(body.user_id)
     if not user:
         raise HTTPException(

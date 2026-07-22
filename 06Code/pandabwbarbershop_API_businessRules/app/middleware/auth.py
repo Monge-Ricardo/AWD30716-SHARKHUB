@@ -43,11 +43,9 @@ async def resolve_user_role(user_id: str) -> str:
     """
     memberships = await crud_client.list_members(user_id=user_id)
     if memberships:
-        # Check if there is an owner membership
         for m in memberships:
             if m["role"].upper() == "OWNER":
                 return "owner"
-        # Check if there is a barber membership
         for m in memberships:
             if m["role"].upper() == "BARBER":
                 return "barber"

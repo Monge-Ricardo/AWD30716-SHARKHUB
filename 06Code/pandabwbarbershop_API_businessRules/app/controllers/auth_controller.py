@@ -14,7 +14,6 @@ async def register(body: RegisterRequest):
     Registra un nuevo usuario en la plataforma.
     Primero crea las credenciales en auth_users, luego crea el perfil en public_users.
     """
-    # Check if user already exists
     existing = await crud_client.list_users(email=body.email)
     if existing:
         raise HTTPException(
@@ -26,10 +25,8 @@ async def register(body: RegisterRequest):
     hashed_pass = hash_password(body.password)
 
     try:
-        # 1. Create entry in auth schema
         await crud_client.create_auth_user(id=user_uuid, email=body.email, encrypted_password=hashed_pass)
         
-        # 2. Create profile in public schema
         profile = await crud_client.create_user(id=user_uuid, full_name=body.name, email=body.email)
         
         return {
@@ -41,7 +38,6 @@ async def register(body: RegisterRequest):
             }
         }
     except Exception as e:
-        # Try cleaning up in case of failure
         try:
             await crud_client.delete_auth_user(user_uuid)
         except Exception:
@@ -63,11 +59,9 @@ async def login(body: LoginRequest):
             detail="Credenciales inválidas."
         )
 
-    # Resolve details
     public_profile = await crud_client.get_user(auth_user["id"])
     role = await resolve_user_role(auth_user["id"])
     
-    # Generate token
     token = create_access_token(data={"sub": auth_user["id"], "role": role})
 
     return {
@@ -80,7 +74,6 @@ async def login(body: LoginRequest):
         }
     }
 
-# Sessions mappings matching URIS.md
 @router.post("/sessions", status_code=status.HTTP_201_CREATED)
 async def create_session(body: LoginRequest):
     """
@@ -108,7 +101,6 @@ async def destroy_session(current_user: dict = Depends(get_current_user)):
     """
     Cierra la sesión actual (Logout).
     """
-    # For a JWT implementation, invalidation happens on the client side (discarding the token).
     return None
 
 @router.post("/auth/google", response_model=TokenResponse)
@@ -144,28 +136,21 @@ async def google_auth(body: GoogleLoginRequest):
             detail="El token de Google no contiene un correo electrónico."
         )
 
-    # Check if user already exists in our database
     existing = await crud_client.list_users(email=email)
     
     if existing:
-        # User exists, retrieve their profile data
         user_profile = existing[0]
         user_uuid = user_profile["id"]
     else:
-        # User does not exist, automatically register with default role 'customer'
         user_uuid = str(uuid.uuid4())
-        # Safe random password for auth database
         random_pass = str(uuid.uuid4())
         hashed_pass = hash_password(random_pass)
         
         try:
-            # 1. Create credentials in auth schema
             await crud_client.create_auth_user(id=user_uuid, email=email, encrypted_password=hashed_pass)
             
-            # 2. Create profile in public schema
             user_profile = await crud_client.create_user(id=user_uuid, full_name=name, email=email)
         except Exception as e:
-            # Try cleaning up on failure
             try:
                 await crud_client.delete_auth_user(user_uuid)
             except Exception:
@@ -175,10 +160,8 @@ async def google_auth(body: GoogleLoginRequest):
                 detail=f"Error durante el registro automático con Google: {str(e)}"
             )
 
-    # Resolve role (defaults to customer if no barbershop memberships exist)
     role = await resolve_user_role(user_uuid)
     
-    # Generate our local system token
     token = create_access_token(data={"sub": user_uuid, "role": role})
     
     return {

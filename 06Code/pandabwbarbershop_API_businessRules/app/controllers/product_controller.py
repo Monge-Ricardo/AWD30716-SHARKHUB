@@ -12,7 +12,6 @@ async def list_shop_products(shop_id: str, current_user: dict = Depends(get_curr
     """
     Obtiene la lista de productos de una barbería específica (HU19).
     """
-    # Verify if shop exists
     shop = await crud_client.get_barbershop(shop_id)
     if not shop:
         raise HTTPException(
@@ -54,7 +53,6 @@ async def create_product(shop_id: str, body: ProductCreate, current_user: dict =
             detail="Barbería no encontrada."
         )
 
-    # Enforce membership check
     await check_is_barbershop_member(current_user["id"], shop_id)
 
     new_product = await crud_client.create_product(
@@ -105,7 +103,6 @@ async def update_product_details(shop_id: str, product_id: str, body: ProductUpd
     Actualiza el stock, precio u otros datos del producto.
     Solo miembros (Barberos o Dueños) autorizados pueden editarlo (HU17).
     """
-    # Enforce membership check
     await check_is_barbershop_member(current_user["id"], shop_id)
 
     product = await crud_client.get_product(product_id)
@@ -146,7 +143,6 @@ async def delete_product_details(shop_id: str, product_id: str, current_user: di
     Elimina un producto del catálogo.
     Solo miembros (Barberos o Dueños) autorizados pueden eliminarlo (HU18).
     """
-    # Enforce membership check
     await check_is_barbershop_member(current_user["id"], shop_id)
 
     product = await crud_client.get_product(product_id)
