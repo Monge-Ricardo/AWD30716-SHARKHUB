@@ -22,38 +22,6 @@ interface Barber {
   barbershop_id?: string;
 }
 
-interface Barbershop {
-  id: string;
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-  latitude: number | null;
-  longitude: number | null;
-}
-
-const loadGoogleMapsScript = (callback: () => void) => {
-  if ((window as any).google && (window as any).google.maps) {
-    callback();
-    return;
-  }
-  const existingScript = document.getElementById('googleMapsScript');
-  if (existingScript) {
-    existingScript.addEventListener('load', callback);
-    return;
-  }
-  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '';
-  const script = document.createElement('script');
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-  script.id = 'googleMapsScript';
-  script.async = true;
-  script.defer = true;
-  script.onload = () => {
-    if (callback) callback();
-  };
-  document.head.appendChild(script);
-};
-
 export default function LandingPage() {
   const [initialPublicCache] = useState(() => {
     const cachedServices = getPublicCachedRequestData<Service[]>(
@@ -64,31 +32,22 @@ export default function LandingPage() {
       '/api/customer/barbers',
       CACHE_TTL.LANDING_PUBLIC,
     );
-    const cachedBarbershops = getPublicCachedRequestData<Barbershop[]>(
-      '/barbershops',
-      CACHE_TTL.LANDING_PUBLIC,
-    );
 
     return {
       services: cachedServices,
       barbers: cachedBarbers?.data ?? null,
-      barbershops: cachedBarbershops,
     };
   });
 
   const hasCompletePublicCache =
     initialPublicCache.services !== null &&
-    initialPublicCache.barbers !== null &&
-    initialPublicCache.barbershops !== null;
+    initialPublicCache.barbers !== null;
 
   const [services, setServices] = useState<Service[]>(
     initialPublicCache.services ?? [],
   );
   const [barbers, setBarbers] = useState<Barber[]>(
     initialPublicCache.barbers ?? [],
-  );
-  const [barbershops, setBarbershops] = useState<Barbershop[]>(
-    initialPublicCache.barbershops ?? [],
   );
   const [loading, setLoading] = useState(!hasCompletePublicCache);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -132,29 +91,13 @@ export default function LandingPage() {
         { id: 'b3', full_name: 'Ricardo Monge', barbershop_name: 'PANDA Black & White Central' }
       ];
 
-      const fallbackBarbershops: Barbershop[] = [
-        {
-          id: 'shop1',
-          name: 'PANDA Black & White Central',
-          address: 'Calle Inés Gangotena con Av. Atahualpa, Quito',
-          phone: '+593 99 999 9999',
-          email: 'info@barberiapanda.com',
-          latitude: -0.180653,
-          longitude: -78.467834
-        }
-      ];
-
-      const [servicesResult, barbersResult, shopsResult] = await Promise.allSettled([
+      const [servicesResult, barbersResult] = await Promise.allSettled([
         cachedPublicRequest<Service[]>(
           '/api/customer/services',
           CACHE_TTL.LANDING_PUBLIC,
         ),
         cachedPublicRequest<{ data: Barber[] }>(
           '/api/customer/barbers',
-          CACHE_TTL.LANDING_PUBLIC,
-        ),
-        cachedPublicRequest<Barbershop[]>(
-          '/barbershops',
           CACHE_TTL.LANDING_PUBLIC,
         ),
       ]);
@@ -173,132 +116,11 @@ export default function LandingPage() {
         setBarbers(fallbackBarbers);
       }
 
-      if (shopsResult.status === 'fulfilled') {
-        setBarbershops(shopsResult.value || []);
-      } else {
-        console.error('Error loading barbershops, using fallbacks:', shopsResult.reason);
-        setBarbershops(fallbackBarbershops);
-      }
-
       setLoading(false);
     }
 
     void loadData();
   }, []);
-
-  useEffect(() => {
-    if (barbershops.length > 0) {
-      loadGoogleMapsScript(() => {
-        const mapEl = document.getElementById('google-map-element');
-        if (mapEl && (window as any).google && (window as any).google.maps) {
-          const defaultShop = barbershops.find(s => s.latitude && s.longitude);
-          const center = defaultShop 
-            ? { lat: Number(defaultShop.latitude), lng: Number(defaultShop.longitude) } 
-            : { lat: -0.180653, lng: -78.467834 };
-
-          const map = new (window as any).google.maps.Map(mapEl, {
-            center: center,
-            zoom: 13,
-            styles: [
-              { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
-              { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
-              { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
-              {
-                featureType: 'administrative.locality',
-                elementType: 'labels.text.fill',
-                stylers: [{ color: '#d59563' }]
-              },
-              {
-                featureType: 'poi',
-                elementType: 'labels.text.fill',
-                stylers: [{ color: '#d59563' }]
-              },
-              {
-                featureType: 'poi.park',
-                elementType: 'geometry',
-                stylers: [{ color: '#263c3f' }]
-              },
-              {
-                featureType: 'poi.park',
-                elementType: 'labels.text.fill',
-                stylers: [{ color: '#6b9a76' }]
-              },
-              {
-                featureType: 'road',
-                elementType: 'geometry',
-                stylers: [{ color: '#38414e' }]
-              },
-              {
-                featureType: 'road',
-                elementType: 'geometry.stroke',
-                stylers: [{ color: '#212a37' }]
-              },
-              {
-                featureType: 'road',
-                elementType: 'labels.text.fill',
-                stylers: [{ color: '#9ca5b3' }]
-              },
-              {
-                featureType: 'road.highway',
-                elementType: 'geometry',
-                stylers: [{ color: '#746855' }]
-              },
-              {
-                featureType: 'road.highway',
-                elementType: 'geometry.stroke',
-                stylers: [{ color: '#1f2835' }]
-              },
-              {
-                featureType: 'road.highway',
-                elementType: 'labels.text.fill',
-                stylers: [{ color: '#f3d19c' }]
-              },
-              {
-                featureType: 'water',
-                elementType: 'geometry',
-                stylers: [{ color: '#17263c' }]
-              },
-              {
-                featureType: 'water',
-                elementType: 'labels.text.fill',
-                stylers: [{ color: '#515c6d' }]
-              },
-              {
-                featureType: 'water',
-                elementType: 'labels.text.stroke',
-                stylers: [{ color: '#17263c' }]
-              }
-            ]
-          });
-
-          barbershops.forEach(shop => {
-            if (shop.latitude && shop.longitude) {
-              const marker = new (window as any).google.maps.Marker({
-                position: { lat: Number(shop.latitude), lng: Number(shop.longitude) },
-                map: map,
-                title: shop.name,
-                animation: (window as any).google.maps.Animation.DROP
-              });
-
-              const infoWindow = new (window as any).google.maps.InfoWindow({
-                content: `
-                  <div style="color: #000; padding: 10px; font-family: Arial, sans-serif;">
-                    <h5 style="margin: 0 0 5px 0; color: #D4AF37;">${shop.name}</h5>
-                    <p style="margin: 0 0 5px 0; font-size: 13px;">${shop.address}</p>
-                    ${shop.phone ? `<p style="margin: 0; font-size: 12px; color: #555;"><b>Tlf:</b> ${shop.phone}</p>` : ''}
-                  </div>
-                `
-              });
-
-              marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-              });
-            }
-          });
-        }
-      });
-    }
-  }, [barbershops]);
 
   if (loading) {
     return (
@@ -310,11 +132,6 @@ export default function LandingPage() {
       </div>
     );
   }
-
-  const mainShop = barbershops[0];
-  const shopAddress = mainShop?.address || 'Calle Inés Gangotena con Av. Atahualpa, Quito';
-  const shopPhone = mainShop?.phone || '+593 99 999 9999';
-  const shopEmail = mainShop?.email || 'info@barberiapanda.com';
 
   const serviceImages = [
     '/img/haircut.png',
@@ -558,34 +375,30 @@ export default function LandingPage() {
         <div className="container">
           <div className="text-center mx-auto mb-5" style={{ maxWidth: '600px' }}>
             <p className="d-inline-block bg-secondary text-primary py-1 px-4">Contacto</p>
-            <h1 className="text-uppercase text-white">Nuestras Sucursales</h1>
+            <h1 className="text-uppercase text-white">Ubicación y Canales</h1>
           </div>
           
           <div className="row g-4 text-start">
-            <div className="col-lg-4 d-flex flex-column gap-4">
-              <div className="bg-secondary p-4 text-center d-flex flex-column align-items-center justify-content-center" style={{ flex: 1 }}>
+            <div className="col-md-4">
+              <div className="bg-secondary p-4 text-center h-100 d-flex flex-column align-items-center justify-content-center">
                 <i className="fa-solid fa-map-pin text-primary mb-3" style={{ fontSize: '2rem' }}></i>
-                <h5 className="text-white text-uppercase">Ubicaciones</h5>
-                <p className="text-muted mb-0">{shopAddress}</p>
-              </div>
-              <div className="bg-secondary p-4 text-center d-flex flex-column align-items-center justify-content-center" style={{ flex: 1 }}>
-                <i className="fa-solid fa-phone text-primary mb-3" style={{ fontSize: '2rem' }}></i>
-                <h5 className="text-white text-uppercase">Llámanos</h5>
-                <p className="text-muted mb-0">{shopPhone}</p>
-              </div>
-              <div className="bg-secondary p-4 text-center d-flex flex-column align-items-center justify-content-center" style={{ flex: 1 }}>
-                <i className="fa-solid fa-envelope text-primary mb-3" style={{ fontSize: '2rem' }}></i>
-                <h5 className="text-white text-uppercase">Escríbenos</h5>
-                <p className="text-muted mb-0">{shopEmail}</p>
+                <h5 className="text-white text-uppercase">Ubicación</h5>
+                <p className="text-muted mb-0">Calle Inés Gangotena con Av. Atahualpa</p>
               </div>
             </div>
-            
-            <div className="col-lg-8">
-              <div 
-                id="google-map-element" 
-                className="w-100 rounded border" 
-                style={{ height: '450px', borderColor: '#D4AF37', minHeight: '300px' }}
-              ></div>
+            <div className="col-md-4">
+              <div className="bg-secondary p-4 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                <i className="fa-solid fa-phone text-primary mb-3" style={{ fontSize: '2rem' }}></i>
+                <h5 className="text-white text-uppercase">Llámanos</h5>
+                <p className="text-muted mb-0">+593 99 999 9999</p>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="bg-secondary p-4 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                <i className="fa-solid fa-envelope text-primary mb-3" style={{ fontSize: '2rem' }}></i>
+                <h5 className="text-white text-uppercase">Escríbenos</h5>
+                <p className="text-muted mb-0">info@barberiapanda.com</p>
+              </div>
             </div>
           </div>
         </div>

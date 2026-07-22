@@ -6,18 +6,23 @@ from fastapi import (
     Depends,
     Query,
     Header,
+    BackgroundTasks,
 )
 from typing import List, Optional, Tuple
 from datetime import datetime, date, time, timedelta
 from app.clients.crud_client import crud_client
 from app.middleware.auth import get_current_user, require_role
 from app.controllers.appointment_controller import parse_time_str, parse_date_str
+from app.services.appointment_email_service import (
+    send_appointment_created_email_safely,
+)
 
 
 APPOINTMENT_SLOT_INTERVAL_MINUTES = 30
 
 router = APIRouter(prefix="/api", tags=["Role Dashboards (Owner, Barber, Customer)"])
 
+# Helper to verify ownership of a shop
 async def get_owner_barbershop_id(owner_id: str, request_barbershop_id: Optional[str] = None) -> str:
     memberships = await crud_client.list_members(user_id=owner_id)
     owned_ids = [m["barbershop_id"] for m in memberships if m["role"].upper() == "OWNER" and m["status"] == "active"]
@@ -30,6 +35,7 @@ async def get_owner_barbershop_id(owner_id: str, request_barbershop_id: Optional
         return request_barbershop_id
     return owned_ids[0]
 
+# Helper to verify barber belongs to a shop
 async def get_barber_barbershop_id(barber_id: str) -> str:
     memberships = await crud_client.list_members(user_id=barber_id)
     for m in memberships:
@@ -41,7 +47,7 @@ async def get_barber_barbershop_id(barber_id: str) -> str:
     )
 
 # ========================================================
-#  A. OWNER ENDPOINTS
+# 👑 A. OWNER ENDPOINTS
 # ========================================================
 
 @router.get("/owner/barbershops", dependencies=[Depends(require_role(["owner"]))])
@@ -111,6 +117,7 @@ async def owner_add_barber(body: dict, current_user: dict = Depends(get_current_
         
     shop_id = await get_owner_barbershop_id(current_user["id"], x_barbershop_id)
     
+    # 1. Lookup user in public profiles
     profiles = await crud_client.list_users(email=email)
     if not profiles:
         raise HTTPException(
@@ -119,6 +126,7 @@ async def owner_add_barber(body: dict, current_user: dict = Depends(get_current_
         )
     target_user = profiles[0]
 
+    # 2. Add as barber member
     await crud_client.create_member(
         barbershop_id=shop_id,
         user_id=target_user["id"],
@@ -139,6 +147,7 @@ async def owner_patch_barber_status(member_id: str, body: dict, current_user: di
         
     shop_id = await get_owner_barbershop_id(current_user["id"], x_barbershop_id)
     
+    # Verify member exists and belongs to this shop
     member = await crud_client.get_member(member_id)
     if not member or member["barbershop_id"] != shop_id:
         raise HTTPException(status_code=404, detail="Miembro no encontrado en su barbería.")
@@ -173,6 +182,7 @@ async def owner_patch_appointment_status(appointment_id: str, body: dict, curren
         
     shop_id = await get_owner_barbershop_id(current_user["id"], x_barbershop_id)
     
+    # Verify appointment belongs to owner's shop
     appointment = await crud_client.get_appointment(appointment_id)
     if not appointment or appointment["barbershop_id"] != shop_id:
         raise HTTPException(status_code=404, detail="Cita no encontrada en su barbería.")
@@ -180,7 +190,7 @@ async def owner_patch_appointment_status(appointment_id: str, body: dict, curren
     return await crud_client.update_appointment(appointment_id, {"status": new_status})
 
 # ========================================================
-#  B. BARBER ENDPOINTS
+# 💈 B. BARBER ENDPOINTS
 # ========================================================
 
 @router.get("/barber/appointments", dependencies=[Depends(require_role(["barber"]))])
@@ -223,7 +233,7 @@ async def barber_create_product(body: dict, current_user: dict = Depends(get_cur
     )
 
 # ========================================================
-#  C. CUSTOMER ENDPOINTS
+# 👥 C. CUSTOMER ENDPOINTS
 # ========================================================
 
 @router.get("/customer/barbers")
@@ -276,18 +286,21 @@ async def customer_get_available_times(
     Calcula dinámicamente las horas de turnos libres para un barbero en una fecha y servicio específico.
     Filtra colisiones con citas existentes y respeta el horario de disponibilidad.
     """
+    # 1. Verify service
     service = await crud_client.get_service(service_id)
     if not service:
         raise HTTPException(status_code=404, detail="Servicio no encontrado.")
     duration = timedelta(minutes=int(service["duration_minutes"]))
     shop_id = service["barbershop_id"]
 
+    # 2. Get date day of week
     try:
         query_date = datetime.strptime(date, "%Y-%m-%d").date()
     except ValueError:
         raise HTTPException(status_code=400, detail="Formato de fecha inválido. Use YYYY-MM-DD.")
     day_of_week = query_date.isoweekday()
 
+    # 3. Find availability block
     availabilities = await crud_client.list_availabilities(barber_id=barber_id, barbershop_id=shop_id)
     matching_availability = None
     for availability in availabilities:
@@ -301,12 +314,15 @@ async def customer_get_available_times(
     availability_start = parse_time_str(matching_availability["start_time"])
     availability_end = parse_time_str(matching_availability["end_time"])
 
+    # 4. Fetch existing appointments
     appointments = await crud_client.list_appointments(barber_id=barber_id, appointment_date=date)
     active_appointments = [a for a in appointments if a["status"] != "cancelled"]
 
+    # 5. Generate slots at APPOINTMENT_SLOT_INTERVAL_MINUTES intervals
     start_dt = datetime.combine(query_date, availability_start)
     end_dt = datetime.combine(query_date, availability_end)
     
+    # Get current time in Ecuador (UTC-5)
     now_ecuador = datetime.utcnow() - timedelta(hours=5)
     
     slots = []
@@ -321,6 +337,7 @@ async def customer_get_available_times(
             appointment_start = parse_time_str(appointment["start_time"])
             appointment_end = parse_time_str(appointment["end_time"])
             
+            # overlap check
             if slot_start < appointment_end and appointment_start < slot_end:
                 overlap = True
                 break
@@ -367,7 +384,11 @@ async def _link_service_with_rollback(appointment_id: str, service_id: str) -> N
         )
 
 @router.post("/customer/appointments", status_code=status.HTTP_201_CREATED)
-async def customer_book_appointment(body: dict, current_user: dict = Depends(get_current_user)):
+async def customer_book_appointment(
+    body: dict,
+    background_tasks: BackgroundTasks,
+    current_user: dict = Depends(get_current_user),
+):
     """
     Confirma una reserva de cita para un cliente.
     Realiza todas las validaciones de disponibilidad y conflictos horaria.
@@ -380,18 +401,22 @@ async def customer_book_appointment(body: dict, current_user: dict = Depends(get
     if not all([barber_id, service_id, appointment_date_str, start_time_str]):
         raise HTTPException(status_code=400, detail="Faltan campos obligatorios.")
 
+    # Get service duration
     service = await crud_client.get_service(service_id)
     if not service:
         raise HTTPException(status_code=404, detail="Servicio no encontrado.")
     duration_min = int(service["duration_minutes"])
     shop_id = service["barbershop_id"]
 
+    # Parse inputs (SRP: Parsing responsibility)
     app_date, start_time, end_time = _parse_booking_request_times(
         appointment_date_str=appointment_date_str,
         start_time_str=start_time_str,
         duration_min=duration_min
     )
 
+    # 1. Validate availability and overlaps (HU21 / HU28)
+    # We call our validation function directly
     from app.controllers.appointment_controller import validate_appointment_rules
     await validate_appointment_rules(
         barbershop_id=shop_id,
@@ -401,6 +426,7 @@ async def customer_book_appointment(body: dict, current_user: dict = Depends(get
         end_time=end_time
     )
 
+    # 2. Create appointment
     new_appointment = await crud_client.create_appointment(
         barbershop_id=shop_id,
         client_id=current_user["id"],
@@ -411,15 +437,31 @@ async def customer_book_appointment(body: dict, current_user: dict = Depends(get
         notes=body.get("notes")
     )
 
+    # 3. Link service (SRP: Database transaction / rollback responsibility)
     await _link_service_with_rollback(
         appointment_id=new_appointment["id"],
         service_id=service_id
     )
 
+    # Schedule the email only after the appointment and its service were saved.
+    barber = await crud_client.get_user(barber_id)
+
+    background_tasks.add_task(
+        send_appointment_created_email_safely,
+        customer_email=current_user.get("email", ""),
+        customer_name=current_user.get("full_name", "Cliente"),
+        appointment_id=new_appointment["id"],
+        appointment_date=app_date,
+        start_time=start_time,
+        service_name=service.get("name", "Servicio de barbería"),
+        barber_name=(barber or {}).get("full_name", "Barbero asignado"),
+    )
+
     return {
         "status": "success",
         "message": "Cita agendada de forma correcta",
-        "appointment_id": new_appointment["id"]
+        "appointment_id": new_appointment["id"],
+        "email_status": "scheduled",
     }
 
 @router.get("/customer/test-setup-availability")
@@ -429,7 +471,7 @@ async def test_setup_availability():
     para todos los días de la semana (1 al 7) de 08:00 a 20:00.
     """
     try:
-
+        # 1. Obtener todos los miembros
         members = await crud_client.list_members()
         barbers = [m for m in members if m.get("role") == "barber"]
         
@@ -439,6 +481,7 @@ async def test_setup_availability():
             shop_id = barber["barbershop_id"]
             for day in range(1, 8):
                 try:
+                    # Check if already exists for this barber and day
                     existing = await crud_client.list_availabilities(barber_id=barber_id)
                     day_exists = any(av["day_of_week"] == day for av in existing)
                     if not day_exists:
